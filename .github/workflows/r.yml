@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      
+
       - name: Install R and dependencies
         run: |
           sudo apt update -qq
@@ -36,6 +36,5 @@ jobs:
       - name: Run R scripts
         run: |
           Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R"
-          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R"
           Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R"
           Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray-data_analysis.R"
