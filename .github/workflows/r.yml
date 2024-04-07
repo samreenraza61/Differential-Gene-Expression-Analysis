@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Bioconductor packages
         run: |
-          R -e "BiocManager::install(version = '3.18')"
+          R -e "BiocManager::install(version = '3.18', dependencies = TRUE)"
           R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'), dependencies = TRUE)"
           R -e "BiocManager::install('oligo', dependencies = TRUE)"
           R -e "BiocManager::install('Biobase')"
