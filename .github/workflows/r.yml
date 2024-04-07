@@ -29,13 +29,13 @@ jobs:
       - name: Install Bioconductor packages
         run: |
           R -e "BiocManager::install(version = '3.18', dependencies = TRUE)"
+          R -e "BiocManager::install(c('GenomicRanges','Biostrings','SummarizedExperiment'),depemdencies = TRUE)"
+          R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'oligoClasses'), dependencies = TRUE)" 
           R -e "BiocManager::install('oligo', dependencies = TRUE)"
-          R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'), dependencies = TRUE)" 
           R -e "BiocManager::install('Biobase')"
           R -e "BiocManager::install('multiClust')"
           R -e "BiocManager::install('limma')"
           R -e "BiocManager::install('EnhancedVolcano')"
-          R -e "BiocManager::install('GenomicRanges')"
           R -e "BiocManager::install('diffcoexp')"
           R -e "BiocManager::install('clusterProfiler')"
           R -e "BiocManager::install('enrichplot')"
