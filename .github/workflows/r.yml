@@ -16,27 +16,22 @@ jobs:
         run: |
           sudo apt update -qq
           sudo apt install -y r-base
-          R -e "install.packages(c('ggplot2','amap','pheatmap','ggplot2','ggrepel','readxl','openxlsx'))"
-          R -e "install.packages('matrixStats', version = '0.58.0', repos='https://cloud.r-project.org/')"
-          Rscript -e "install.packages('BiocManager')"
-          Rscript -e "BiocManager::install(version = '3.12')"
-          Rscript -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'),dependencies = TRUE)"
-          Rscript -e "BiocManager::install('oligo',dependencies = TRUE)"
-          Rscript -e "BiocManager::install('Biobase')"
-          Rscript -e "BiocManager::install('multiClust')"
-          Rscript -e "BiocManager::install('limma')"
-          Rscript -e "BiocManager::install('EnhancedVolcano')"
-          Rscript -e "BiocManager::install('GenomicRanges')"
-          Rscript -e "BiocManager::install('diffcoexp')"
-          Rscript -e "BiocManager::install('clusterProfiler')"
-          Rscript -e "BiocManager::install('enrichplot')"
-          Rscript -e "BiocManager::install('pathview')"
-          Rscript -e "BiocManager::install('org.Hs.eg.db')"
-
-      - name: Set permissions for R library directory
-        run: |
-          sudo chown -R $USER:$USER /usr/local/lib/R/site-library
-          sudo chmod 755 /usr/local/lib/R/site-library
+          R -e "install.packages(c('ggplot2','amap','pheatmap','ggplot2','ggrepel','readxl','openxlsx'), lib='~/R/library')"
+          R -e "install.packages('matrixStats', version = '0.58.0', repos='https://cloud.r-project.org/', lib='~/R/library')"
+          Rscript -e "install.packages('BiocManager', lib='~/R/library')"
+          Rscript -e "BiocManager::install(version = '3.12', lib='~/R/library')"
+          Rscript -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'), dependencies = TRUE, lib='~/R/library')"
+          Rscript -e "BiocManager::install('oligo', dependencies = TRUE, lib='~/R/library')"
+          Rscript -e "BiocManager::install('Biobase', lib='~/R/library')"
+          Rscript -e "BiocManager::install('multiClust', lib='~/R/library')"
+          Rscript -e "BiocManager::install('limma', lib='~/R/library')"
+          Rscript -e "BiocManager::install('EnhancedVolcano', lib='~/R/library')"
+          Rscript -e "BiocManager::install('GenomicRanges', lib='~/R/library')"
+          Rscript -e "BiocManager::install('diffcoexp', lib='~/R/library')"
+          Rscript -e "BiocManager::install('clusterProfiler', lib='~/R/library')"
+          Rscript -e "BiocManager::install('enrichplot', lib='~/R/library')"
+          Rscript -e "BiocManager::install('pathview', lib='~/R/library')"
+          Rscript -e "BiocManager::install('org.Hs.eg.db', lib='~/R/library')"
 
       - name: Run R scripts
         run: |
