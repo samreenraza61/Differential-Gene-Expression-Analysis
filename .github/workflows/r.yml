@@ -33,11 +33,10 @@ jobs:
           Rscript -e "BiocManager::install('pathview')"
           Rscript -e "BiocManager::install('org.Hs.eg.db')"
 
-      - name: Create R library directory
-        run: sudo mkdir -p /usr/local/lib/R/site-library
-
       - name: Set permissions for R library directory
-        run: sudo chmod 777 /usr/local/lib/R/site-library
+        run: |
+          sudo chown -R $USER:$USER /usr/local/lib/R/site-library
+          sudo chmod 755 /usr/local/lib/R/site-library
 
       - name: Run R scripts
         run: |
