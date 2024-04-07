@@ -1,0 +1,41 @@
+name: Microarray Analysis
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Install R and dependencies
+        run: |
+          sudo apt update -qq
+          sudo apt install -y r-base
+          R -e "install.packages(c('ggplot2','amap','pheatmap','ggplot2','ggrepel','readxl','openxlsx'))"
+          R -e "install.packages('matrixStats', version = '0.58.0', repos='https://cloud.r-project.org/')"
+          Rscript -e "install.packages('BiocManager')"
+          Rscript -e "BiocManager::install(version = '3.12')"
+          Rscript -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'),dependencies = TRUE)"
+          Rscript -e "BiocManager::install('oligo',dependencies = TRUE)"
+          Rscript -e "BiocManager::install('Biobase')"
+          Rscript -e "BiocManager::install('multiClust')"
+          Rscript -e "BiocManager::install('limma')"
+          Rscript -e "BiocManager::install('EnhancedVolcano')"
+          Rscript -e "BiocManager::install('GenomicRanges')"
+          Rscript -e "BiocManager::install('diffcoexp')"
+          Rscript -e "BiocManager::install('clusterProfiler')"
+          Rscript -e "BiocManager::install('enrichplot')"
+          Rscript -e "BiocManager::install('pathview')"
+          Rscript -e "BiocManager::install('org.Hs.eg.db')"
+      
+      - name: Run R scripts
+        run: |
+          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R"
+          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R"
+          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R"
+          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray-data_analysis.R"
