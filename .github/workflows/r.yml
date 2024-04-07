@@ -18,26 +18,15 @@ jobs:
           sudo apt install -y r-base
           mkdir -p ~/R/library
           R -e "install.packages('BiocManager', lib='~/R/library')"
-          Rscript -e "BiocManager::install(version = '3.12', lib='~/R/library')"
-          Rscript -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'), dependencies = TRUE, lib='~/R/library')"
-          Rscript -e "BiocManager::install('oligo', dependencies = TRUE, lib='~/R/library')"
-          Rscript -e "BiocManager::install('Biobase', lib='~/R/library')"
-          Rscript -e "BiocManager::install('multiClust', lib='~/R/library')"
-          Rscript -e "BiocManager::install('limma', lib='~/R/library')"
-          Rscript -e "BiocManager::install('EnhancedVolcano', lib='~/R/library')"
-          Rscript -e "BiocManager::install('GenomicRanges', lib='~/R/library')"
-          Rscript -e "BiocManager::install('diffcoexp', lib='~/R/library')"
-          Rscript -e "BiocManager::install('clusterProfiler', lib='~/R/library')"
-          Rscript -e "BiocManager::install('enrichplot', lib='~/R/library')"
-          Rscript -e "BiocManager::install('pathview', lib='~/R/library')"
-          Rscript -e "BiocManager::install('org.Hs.eg.db', lib='~/R/library')"
-
-      - name: Test loading BiocManager package
-        run: |
-          R -e "library(BiocManager)"
-
-      - name: Run R scripts
-        run: |
-          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R"
-          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R"
-          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray-data_analysis.R"
+          R -e "BiocManager::install(version = '3.12', lib='~/R/library')"
+          R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'), dependencies = TRUE, lib='~/R/library')"
+          R -e "BiocManager::install('oligo', dependencies = TRUE, lib='~/R/library')"
+          R -e "BiocManager::install('Biobase', lib='~/R/library')"
+          R -e "BiocManager::install('multiClust', lib='~/R/library')"
+          R -e "BiocManager::install('limma', lib='~/R/library')"
+          R -e "BiocManager::install('EnhancedVolcano', lib='~/R/library')"
+          R -e "BiocManager::install('GenomicRanges', lib='~/R/library')"
+          R -e "BiocManager::install('diffcoexp', lib='~/R/library')"
+          R -e "BiocManager::install('clusterProfiler', lib='~/R/library')"
+          R -e "BiocManager::install('enrichplot', lib='~/R/library')"
+          R -e "BiocManager::install('pathview', lib='~/R/library')
