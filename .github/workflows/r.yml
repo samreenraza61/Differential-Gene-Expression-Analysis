@@ -22,10 +22,13 @@ jobs:
         run: |
           R -e "install.packages('BiocManager', lib='~/R/library')"
 
-      - name: Set R library path and install Bioconductor packages
+      - name: Set R library path
         run: |
           echo '.libPaths("~/R/library")' >> ~/.Rprofile
-          R -e "BiocManager::install(version = '3.12')"
+
+      - name: Install Bioconductor packages
+        run: |
+          R -e "BiocManager::install(version = '3.18')"
           R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'), dependencies = TRUE)"
           R -e "BiocManager::install('oligo', dependencies = TRUE)"
           R -e "BiocManager::install('Biobase')"
