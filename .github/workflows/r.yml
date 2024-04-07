@@ -17,9 +17,7 @@ jobs:
           sudo apt update -qq
           sudo apt install -y r-base
           mkdir -p ~/R/library
-          R -e "install.packages(c('ggplot2','amap','pheatmap','ggplot2','ggrepel','readxl','openxlsx'), lib='~/R/library')"
-          R -e "install.packages('matrixStats', version = '0.58.0', repos='https://cloud.r-project.org/', lib='~/R/library')"
-          Rscript -e "install.packages('BiocManager', lib='~/R/library')"
+          R -e "install.packages('BiocManager', lib='~/R/library')"
           Rscript -e "BiocManager::install(version = '3.12', lib='~/R/library')"
           Rscript -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'SummarizedExperiment', 'oligoClasses'), dependencies = TRUE, lib='~/R/library')"
           Rscript -e "BiocManager::install('oligo', dependencies = TRUE, lib='~/R/library')"
@@ -33,6 +31,10 @@ jobs:
           Rscript -e "BiocManager::install('enrichplot', lib='~/R/library')"
           Rscript -e "BiocManager::install('pathview', lib='~/R/library')"
           Rscript -e "BiocManager::install('org.Hs.eg.db', lib='~/R/library')"
+
+      - name: Test loading BiocManager package
+        run: |
+          R -e "library(BiocManager)"
 
       - name: Run R scripts
         run: |
