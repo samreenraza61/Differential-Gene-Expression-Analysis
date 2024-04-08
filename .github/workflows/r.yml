@@ -19,7 +19,13 @@ jobs:
            R -e 'install.packages("renv")'
            R -e 'renv::snapshot()'
            R -e 'renv::restore()'
-           
+      - name: Install oligo package
+        run: |
+          R -e "install.packages('BiocManager')"
+          R -e "BiocManager::install(version = '3.14', dependencies = TRUE)"
+          R -e "BiocManager::install(c('oligo'), dependencies = TRUE)"
+          R -e "if (!requireNamespace('oligo', quietly = TRUE)) { stop('oligo package not installed') }"     
+          
       - name: Install Bioconductor packages
         run: |
           R -e "install.packages('BiocManager')"
