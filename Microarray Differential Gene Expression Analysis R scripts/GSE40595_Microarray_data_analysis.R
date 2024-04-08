@@ -11,7 +11,7 @@ library(ggplot2)
 #Read .CEL files = rawdata
 
 # Set the path to the CEL folder
-cel_folder <- "C:/Users/Muzi/Downloads/GSE40595_RAW"
+cel_folder <- "GSE40595_RAW"
 
 # List files in the CEL folder
 cel_files <- list.files(cel_folder, full.names = TRUE)
