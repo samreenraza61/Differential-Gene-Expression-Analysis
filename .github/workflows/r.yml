@@ -1,49 +1,30 @@
-name: Microarray Analysis
+name: Microarray data analysis
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  run-scripts:
+  run:
     runs-on: ubuntu-latest
+    container: docker://dvcorg/cml:latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install R and dependencies
-        run: |
-          sudo apt update -qq
-          sudo apt install -y r-base
-          mkdir -p ~/R/library
+      - name: Setup R
+        uses: r-lib/actions/setup-r@master
 
-      - name: Install BiocManager
+      - name: Setup dependencies
         run: |
-          R -e "install.packages('BiocManager', lib='~/R/library')"
+          R -e 'install.packages("renv")'
+          R -e 'renv::restore()'
 
-      - name: Set R library path
+      - name: Running R scripts
+        env:
+          Repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo '.libPaths("~/R/library")' >> ~/.Rprofile
+          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R")'
+          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarray_data_analysis.R")'
+          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray_data_analysis.R")'
+          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE18520_Microarraydataanalysis.R")'
 
-      - name: Install Bioconductor packages
-        run: |
-          R -e "BiocManager::install(version = '3.18', dependencies = TRUE)"
-          R -e "BiocManager::install(c('GenomicRanges','Biostrings','SummarizedExperiment'),depemdencies = TRUE)"
-          R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'oligoClasses'), dependencies = TRUE)" 
-          R -e "BiocManager::install('oligo', dependencies = TRUE)"
-          R -e "BiocManager::install('Biobase')"
-          R -e "BiocManager::install('multiClust')"
-          R -e "BiocManager::install('limma')"
-          R -e "BiocManager::install('EnhancedVolcano')"
-          R -e "BiocManager::install('diffcoexp')"
-          R -e "BiocManager::install('clusterProfiler')"
-          R -e "BiocManager::install('enrichplot')"
-          R -e "BiocManager::install('pathview')"
-          R -e "BiocManager::install('org.Hs.eg.db')"
-
-      - name: Run R scripts
-        run: |
-          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R"
-          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R"
-          Rscript "Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray-data_analysis.R"
