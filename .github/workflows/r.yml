@@ -37,6 +37,7 @@ jobs:
                 any::ggrepel
                 any::openxlsx
                 any::readxl
+                any::ggridges
                 
       
       - name: Check out repository
