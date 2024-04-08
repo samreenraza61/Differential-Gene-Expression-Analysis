@@ -11,7 +11,7 @@ library(ggplot2)
 #Read .CEL files = rawdata
 
 # Set the path to the CEL folder
-cel_folder <- "C:/Users/PMLS/Documents/CEL"
+cel_folder <- "GSE54388_RAW"
 
 # List files in the CEL folder
 cel_files <- list.files(cel_folder, full.names = TRUE)
@@ -159,7 +159,7 @@ library(multiClust)
 expr_data <- exprs(normData)
 
 # Write the expression data to a text file
-exp_file <- "expression_data.txt"
+exp_file <- "expression_data_GSE54388.txt"
 write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = NA)
 
 # Using percent to specify the percentage of probes to select 
@@ -204,13 +204,13 @@ result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.0001, "Upregula
                                "Not significant"))
 
 # Write results to a file
-write.table(result, "Diff1_exp.txt", sep = "\t")
+write.table(result, "Diff_exp_GSE54388.txt", sep = "\t")
 
 #Volcano plot:
 library(ggrepel)
 library(EnhancedVolcano)
 
-file1<-"C:/Users/PMLS/Documents/GSE54388_DEG.xlsx"
+file1<-"GSE54388_DEG.xlsx"
 library(readxl)
 data <- read_excel(file1)
 
@@ -238,7 +238,7 @@ DCGs <- res$DCGs
 library(openxlsx)
 
 # Write the DCGs data frame to the Excel file
-write.xlsx(DCGs, "DCGs.xlsx", rowNames = FALSE)
+write.xlsx(DCGs, "DCGs_GSE54388.xlsx", rowNames = FALSE)
 
 #Step: Gene Set Enrichment Analysis
 
@@ -252,7 +252,7 @@ organism = "org.Hs.eg.db"
 
 library(readxl)
 
-file2<-"C:/Users/PMLS/Documents/GOinput2.xlsx"
+file2<-"GOinput_GSE54388.xlsx"
 df = read_excel(file2)
 original_gene_list <- df$logFC
 #original_gene_list
@@ -287,7 +287,7 @@ dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
 
 library(readxl)
 
-file3<-"C:/Users/PMLS/Documents/kegg_input.xlsx"
+file3<-"kegg_input_GSE54388.xlsx"
 df1 = read_excel(file3)
 original_gene_list1 <- df1$logFC
 # name the vector
