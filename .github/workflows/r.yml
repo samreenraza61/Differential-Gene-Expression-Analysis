@@ -19,6 +19,23 @@ jobs:
            R -e 'install.packages("renv")'
            R -e 'renv::snapshot()'
            R -e 'renv::restore()'
+           
+      - name: Install Bioconductor packages
+        run: |
+          R -e "install.packages('BiocManager', repos='https://bioconductor.org/packages/3.14/bioc')"
+          R -e "BiocManager::install(version = '3.14', dependencies = TRUE)"
+          R -e "BiocManager::install(c('GenomicRanges', 'Biostrings', 'SummarizedExperiment'), dependencies = TRUE)"
+          R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'oligoClasses'), dependencies = TRUE)"
+          R -e "BiocManager::install('oligo', dependencies = TRUE)"
+          R -e "BiocManager::install('Biobase')"
+          R -e "BiocManager::install('multiClust')"
+          R -e "BiocManager::install('limma')"
+          R -e "BiocManager::install('EnhancedVolcano')"
+          R -e "BiocManager::install('diffcoexp')"
+          R -e "BiocManager::install('clusterProfiler')"
+          R -e "BiocManager::install('enrichplot')"
+          R -e "BiocManager::install('pathview')"
+          R -e "BiocManager::install('org.Hs.eg.db')"
 
       - name: Running R scripts
         env:
