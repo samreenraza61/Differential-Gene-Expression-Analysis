@@ -159,7 +159,7 @@ library(multiClust)
 expr_data <- exprs(normData)
 
 # Write the expression data to a text file
-exp_file <- "expression_data.txt"
+exp_file <- "expression_data_GSE26712.txt"
 write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = NA)
 
 # Using percent to specify the percentage of probes to select 
@@ -204,7 +204,7 @@ result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.0001, "Upregula
                                "Not significant"))
 
 # Write results to a file
-write.table(result, "Diff1_exp.txt", sep = "\t")
+write.table(result, "Diff_exp_GSE26712.txt", sep = "\t")
 
 #Volcano plot:
 library(ggplot2)
@@ -239,7 +239,7 @@ DCGs <- res$DCGs
 library(openxlsx)
 
 # Write the DCGs data frame to the Excel file
-write.xlsx(DCGs, "DCGs_file.xlsx", rowNames = FALSE)
+write.xlsx(DCGs, "DCGs_GSE26712.xlsx", rowNames = FALSE)
 
 #Step: Gene Set Enrichment Analysis
 
