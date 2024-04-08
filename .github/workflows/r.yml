@@ -5,51 +5,40 @@ on: [push]
 jobs:
   run:
     runs-on: ubuntu-latest
-    container: docker://dvcorg/cml:latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
 
-      - name: Setup dependencies
-        run: |
-           R -e 'install.packages("renv")'
-           R -e 'renv::snapshot()'
-           R -e 'renv::restore()'
-      - name: Install oligo package
-        run: |
-          R -e "install.packages('BiocManager')"
-          R -e "BiocManager::install(version = '3.18')"
-          R -e "BiocManager::install('oligo')"
-          R -e "if (!requireNamespace('oligo', quietly = TRUE)) { stop('oligo package not installed') }"     
-          
-      - name: Install Bioconductor packages
-        run: |
-          R -e "install.packages('BiocManager')"
-          R -e "BiocManager::install(version = '3.18', dependencies = TRUE)"
-          R -e "BiocManager::install(c('GenomicRanges', 'Biostrings', 'SummarizedExperiment'), dependencies = TRUE)"
-          R -e "BiocManager::install(c('MatrixGenerics', 'DelayedArray', 'oligoClasses'), dependencies = TRUE)"
-          R -e "BiocManager::install('oligo', dependencies = TRUE)"
-          R -e "BiocManager::install('Biobase')"
-          R -e "BiocManager::install('multiClust')"
-          R -e "BiocManager::install('limma')"
-          R -e "BiocManager::install('EnhancedVolcano')"
-          R -e "BiocManager::install('diffcoexp')"
-          R -e "BiocManager::install('clusterProfiler')"
-          R -e "BiocManager::install('enrichplot')"
-          R -e "BiocManager::install('pathview')"
-          R -e "BiocManager::install('org.Hs.eg.db')"
+      - name: Install Packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages:
+                any::BiocManager
+                any::oligo
+                any::GenomicRanges
+                any::Biostrings
+                any::SummarizedExperiment
+                any::MatrixGenerics
+                any::DelayedArray
+                any::oligoClasses
+                any::Biobase
+                any::multiClust
+                any::limma
+                any::EnhancedVolcano
+                any::diffcoexp
+                any::clusterProfiler
+                any::enrichplot
+                any::pathview
+                any::org.Hs.eg.db
+      
+      - name: Check out repository
+        uses: actions/checkout@v3
 
       - name: Running R scripts
-        env:
-          Repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          R -e 'renv::activate()'
-          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R")'
-          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarray_data_analysis.R")'
-          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray_data_analysis.R")'
-          R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE18520_Microarraydataanalysis.R")'
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R")'
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarray_data_analysis.R")'
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray_data_analysis.R")'
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE18520_Microarraydataanalysis.R")'
 
