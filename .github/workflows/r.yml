@@ -24,6 +24,7 @@ jobs:
         env:
           Repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          R -e 'renv::activate()'
           R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R")'
           R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarray_data_analysis.R")'
           R -e 'renv::run("Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray_data_analysis.R")'
