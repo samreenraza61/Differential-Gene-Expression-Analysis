@@ -31,6 +31,13 @@ jobs:
                 any::enrichplot
                 any::pathview
                 any::org.Hs.eg.db
+                any::pheatmap
+                any::ggplot2
+                any::amap
+                any::ggrepel
+                any::openxlsx
+                any::readxl
+                
       
       - name: Check out repository
         uses: actions/checkout@v3
@@ -41,4 +48,3 @@ jobs:
           R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarray_data_analysis.R")'
           R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray_data_analysis.R")'
           R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE18520_Microarraydataanalysis.R")'
-
