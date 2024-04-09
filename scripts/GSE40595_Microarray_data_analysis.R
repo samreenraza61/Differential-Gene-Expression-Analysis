@@ -210,7 +210,7 @@ write.table(result, "Diff_exp_GSE40595.txt", sep = "\t")
 library(ggrepel)
 library(EnhancedVolcano)
 
-file1<-"GSE40595_DEG.xlsx"
+file1<-"Required_files/GSE40595_DEG.xlsx"
 library(readxl)
 data <- read_excel(file1)
 
@@ -252,7 +252,7 @@ organism = "org.Hs.eg.db"
 
 library(readxl)
 
-file2<-"GOinput_GSE40595.xlsx"
+file2<-"Required_files/GOinput_GSE40595.xlsx"
 df = read_excel(file2)
 original_gene_list <- df$logFC
 #original_gene_list
@@ -287,7 +287,7 @@ dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
 
 library(readxl)
 
-file3<-"kegg_input_GSE40595.xlsx"
+file3<-"Required_files/kegg_input_GSE40595.xlsx"
 df1 = read_excel(file3)
 original_gene_list1 <- df1$logFC
 # name the vector
