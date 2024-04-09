@@ -49,10 +49,10 @@ jobs:
 
       - name: Running R scripts
         run: |
-          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R")'
-          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R")'
-          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray-data_analysis.R")'
-          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE18520_Microarraydataanalysis.R")'
+          R -e 'source("scripts/GSE40595_Microarray_data_analysis.R")'
+          R -e 'source("scripts/GSE26712_Microarraydataanalysis.R")'
+          R -e 'source("scripts/GSE54388_Microarray-data_analysis.R")'
+          R -e 'source("scripts/GSE18520_Microarraydataanalysis.R")'
           
       - name: Build and Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v6
