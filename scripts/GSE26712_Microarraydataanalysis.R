@@ -211,7 +211,7 @@ library(ggplot2)
 library(ggrepel)
 library(EnhancedVolcano)
 
-file1<-"Required_files/GSE26712_DEG.xlsx"
+file1<-"Required_files/GSE26712_DEGS.xlsx"
 library(readxl)
 data <- read_excel(file1)
 
