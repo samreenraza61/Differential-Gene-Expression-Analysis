@@ -1,0 +1,60 @@
+name: Microarray data analysis
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container: docker://dvcorg/cml:latest
+    steps:
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install Packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages:
+                any::BiocManager
+                any::oligo
+                any::GenomicRanges
+                any::Biostrings
+                any::SummarizedExperiment
+                any::MatrixGenerics
+                any::DelayedArray
+                any::oligoClasses
+                any::Biobase
+                any::multiClust
+                any::limma
+                any::EnhancedVolcano
+                any::diffcoexp
+                any::clusterProfiler
+                any::enrichplot
+                any::pathview
+                any::org.Hs.eg.db
+                any::pheatmap
+                any::ggplot2
+                any::amap
+                any::ggrepel
+                any::openxlsx
+                any::readxl
+                any::ggridges
+                
+      
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Running R scripts
+        run: |
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE40595_Microarray_data_analysis.R")'
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE26712_Microarraydataanalysis.R")'
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE54388_Microarray-data_analysis.R")'
+          R -e 'source("Microarray Differential Gene Expression Analysis R scripts/GSE18520_Microarraydataanalysis.R")'
+          
+      - name: Build and Push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: samreenraza40/microarray_data_analysis
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
