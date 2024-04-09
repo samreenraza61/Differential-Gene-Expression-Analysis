@@ -55,9 +55,12 @@ jobs:
           R -e 'source("scripts/GSE18520_Microarraydataanalysis.R")'
           
       - name: Build and Push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v6
+        uses: docker/build-push-action@v2
         with:
-          image: samreenraza40/microarray_data_analysis
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          context: .
+          file: dockerfile
+          push: true
+          tags: samreenraza40/microarray_data_analysis_scripts:latest
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
