@@ -11,7 +11,7 @@ library(ggplot2)
 #Read .CEL files = rawdata
 
 # Set the path to the CEL folder
-cel_folder <- "C:/Users/PMLS/Documents/GSE26712_RAW"
+cel_folder <- "GSE26712_RAW"
 
 # List files in the CEL folder
 cel_files <- list.files(cel_folder, full.names = TRUE)
@@ -159,7 +159,7 @@ library(multiClust)
 expr_data <- exprs(normData)
 
 # Write the expression data to a text file
-exp_file <- "expression_data.txt"
+exp_file <- "expression_data_GSE26712.txt"
 write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = NA)
 
 # Using percent to specify the percentage of probes to select 
@@ -211,7 +211,7 @@ library(ggplot2)
 library(ggrepel)
 library(EnhancedVolcano)
 
-file1<-"C:/Users/PMLS/Documents/GSE26712_DEGS.xlsx"
+file1<-"GSE26712_DEG.xlsx"
 library(readxl)
 data <- read_excel(file1)
 
@@ -239,7 +239,7 @@ DCGs <- res$DCGs
 library(openxlsx)
 
 # Write the DCGs data frame to the Excel file
-write.xlsx(DCGs, "DCGs_file.xlsx", rowNames = FALSE)
+write.xlsx(DCGs, "DCGs_GSE26712.xlsx", rowNames = FALSE)
 
 #Step: Gene Set Enrichment Analysis
 
@@ -253,7 +253,7 @@ organism = "org.Hs.eg.db"
 
 library(readxl)
 
-file2<-"C:/Users/PMLS/Documents/GO--input3.xlsx"
+file2<-"GOinput_GSE26712.xlsx"
 df = read_excel(file2)
 original_gene_list <- df$logFC
 
@@ -289,7 +289,7 @@ dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
 
 library(readxl)
 
-file3<-"C:/Users/PMLS/Documents/kegg--input.xlsx"
+file3<-"kegg_input_GSE26712.xlsx"
 df1 = read_excel(file3)
 original_gene_list1 <- df1$logFC
 # name the vector
@@ -323,20 +323,3 @@ hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05207", species = kegg_orga
 # Produce a different plot (PDF) (not displayed here)
 hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05207", species = kegg_organism, kegg.native = F)
 knitr::include_graphics("hsa05207.pathview.png")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
