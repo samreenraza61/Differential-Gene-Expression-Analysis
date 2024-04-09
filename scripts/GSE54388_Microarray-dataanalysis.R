@@ -214,7 +214,7 @@ result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.0001, "Upregula
 # Write results to a file
 write.table(result, "Diff_exp_GSE54388.txt", sep = "\t")
 
-file1<-"GSE54388_DEG.xlsx"
+file1<-"Required_files/GSE54388_DEG.xlsx"
 data <- read_excel(file1)
 
 toptable <- topTable(fit, n = Inf)
@@ -246,7 +246,7 @@ suppressPackageStartupMessages(library(ggplot2))
 library(org.Hs.eg.db)
 organism = "org.Hs.eg.db" 
 
-file2<-"GOinput_GSE54388.xlsx"
+file2<-"Required_files/GOinput_GSE54388.xlsx"
 df = read_excel(file2)
 original_gene_list <- df$logFC
 #original_gene_list
@@ -281,7 +281,7 @@ dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
 
 library(readxl)
 
-file3<-"kegg_input_GSE54388.xlsx"
+file3<-"Required_files/kegg_input_GSE54388.xlsx"
 df1 = read_excel(file3)
 original_gene_list1 <- df1$logFC
 # name the vector
