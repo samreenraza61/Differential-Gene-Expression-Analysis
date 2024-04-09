@@ -253,7 +253,7 @@ organism = "org.Hs.eg.db"
 
 library(readxl)
 
-file2<-"Required_files/GOinput_GSE26712.xlsx"
+file2<-"Required_files/Goinput_GSE26712.xlsx"
 df = read_excel(file2)
 original_gene_list <- df$logFC
 
