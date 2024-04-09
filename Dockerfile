@@ -2,7 +2,7 @@
 FROM bioconductor/bioconductor_docker:latest
 
 # Copy your R script and data files to the container
-COPY Microarray\ Differential\ Gene\ Expression\ Analysis\ R\ scripts/GSE54388_Microarray-dataanalysis.R /app/
+COPY Microarray_Differential_Gene_Expression_Analysis_R_scripts/GSE54388_Microarray-dataanalysis.R /app/
 COPY GSE54388_RAW /app/data
 COPY GOinput_GSE54388.xlsx /app/
 COPY GSE54388_DEG.xlsx /app/
