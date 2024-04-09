@@ -7,6 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     container: docker://dvcorg/cml:latest
     steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        
       - name: Install Docker
         run: |
           sudo apt-get update
