@@ -7,6 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     container: docker://dvcorg/cml:latest
     steps:
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker.io -y
+
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
 
@@ -14,32 +19,31 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages:
-                any::BiocManager
-                any::oligo
-                any::GenomicRanges
-                any::Biostrings
-                any::SummarizedExperiment
-                any::MatrixGenerics
-                any::DelayedArray
-                any::oligoClasses
-                any::Biobase
-                any::multiClust
-                any::limma
-                any::EnhancedVolcano
-                any::diffcoexp
-                any::clusterProfiler
-                any::enrichplot
-                any::pathview
-                any::org.Hs.eg.db
-                any::pheatmap
-                any::ggplot2
-                any::amap
-                any::ggrepel
-                any::openxlsx
-                any::readxl
-                any::ggridges
+            any::BiocManager
+            any::oligo
+            any::GenomicRanges
+            any::Biostrings
+            any::SummarizedExperiment
+            any::MatrixGenerics
+            any::DelayedArray
+            any::oligoClasses
+            any::Biobase
+            any::multiClust
+            any::limma
+            any::EnhancedVolcano
+            any::diffcoexp
+            any::clusterProfiler
+            any::enrichplot
+            any::pathview
+            any::org.Hs.eg.db
+            any::pheatmap
+            any::ggplot2
+            any::amap
+            any::ggrepel
+            any::openxlsx
+            any::readxl
+            any::ggridges
                 
-      
       - name: Check out repository
         uses: actions/checkout@v3
 
@@ -57,4 +61,3 @@ jobs:
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
