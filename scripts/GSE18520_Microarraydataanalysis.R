@@ -214,7 +214,7 @@ write.table(result, "Diff_exp_GSE18520.txt", sep = "\t")
 library(ggrepel)
 library(EnhancedVolcano)
 
-file1<-"GSE1852_DEG.xlsx"
+file1<-"GSE18520_DEG.xlsx"
 library(readxl)
 data <- read_excel(file1)
 
