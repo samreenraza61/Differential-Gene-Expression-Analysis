@@ -1,6 +1,13 @@
 # Affymetrix Microarray Data Analysis:
 
-# Step:01  
+# Step:01 
+# Installation of Required packages :
+
+install.packages(c("oligo", "Biobase", "ggplot2", "limma", "pheatmap", "amap", "multiClust", 
+                   "readxl", "openxlsx", "GenomicRanges", "diffcoexp", "clusterProfiler", 
+                   "enrichplot", "org.Hs.eg.db", "DOSE", "pathview", "RCurl"))
+BiocManager::install(c("affy", "pathview"))
+
 # Import microarray expression data as “ExpressionSet”
 #Perform Normalization
 
