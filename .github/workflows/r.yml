@@ -7,8 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Docker (using official script)
-        uses: docker/setup-docker@v2.6.0  # Use the official Docker setup action
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
