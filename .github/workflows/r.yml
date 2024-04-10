@@ -3,7 +3,7 @@ name: Microarray data analysis
 on: [push]
 
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
 
     steps:
