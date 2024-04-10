@@ -10,9 +10,9 @@ jobs:
       - name: Install Docker
         run: |
           sudo apt-get update
+          sudo apt-get remove -y containerd.io containerd
           sudo apt-get install -y docker.io
-          sudo apt-get remove -y containerd.io
-          sudo apt-get install -y containerd
+          sudo apt-get install -y containerd.io
 
       - name: Pull latest Docker image
         run: |
