@@ -1,15 +1,16 @@
 name: Microarray data analysis
 
-on: [push]
+on: [push]  # Trigger workflow on push events to your repository
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Run the workflow on Ubuntu latest
+
     steps:
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install docker.io -y
+      - name: Install Docker (using official script)
+        uses: docker/docker-action@v3  # Use the official Docker action
+        with:
+          type: install  # Specify to install Docker
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
@@ -42,22 +43,22 @@ jobs:
             any::openxlsx
             any::readxl
             any::ggridges
-                
+
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Running R scripts
-        run: |
-          R -e 'source("scripts/GSE40595_Microarray_data_analysis.R")'
-          R -e 'source("scripts/GSE26712_Microarraydataanalysis.R")'
-          R -e 'source("scripts/GSE54388_Microarray-dataanalysis.R")'
-          R -e 'source("scripts/GSE18520_Microarraydataanalysis.R")'
+      - name: Running R scripts (optional consolidation)
+        run: |  # Optional consolidation for efficiency
+          Rscript scripts/GSE40595_Microarray_data_analysis.R
+          Rscript scripts/GSE26712_Microarraydataanalysis.R
+          Rscript scripts/GSE54388_Microarray-dataanalysis.R
+          Rscript scripts/GSE18520_Microarraydataanalysis.R
 
-          - name: Build and Push Docker Image
-            run: |
-              docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
-                docker build -t samreenraza40/microarray_data_analysis_scripts:latest . && \
-                docker push samreenraza40/microarray_data_analysis_scripts:latest
-              env:
-                DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-                DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and Push Docker Image (consider multi-stage)
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
+            docker build -t samreenraza40/microarray_data_analysis_scripts:latest . && \
+            docker push samreenraza40/microarray_data_analysis_scripts:latest
+          env:
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
