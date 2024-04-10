@@ -7,24 +7,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debugging
-        run: |
-          ls -l /usr/bin/docker*
-          sudo which docker
-          sudo docker --version
-          systemctl status docker.service
-          journalctl -xeu docker.service
+      - name: Setup Docker CLI
+        uses: docker/setup-docker@v2
 
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get remove -y containerd.io containerd
-          sudo apt-get install -y docker.io
-          sudo apt-get install -y containerd.io
-          sudo systemctl unmask docker.service
-          sudo systemctl start docker
-          sudo systemctl enable docker
-          systemctl status docker.service || true  # Continue even if status check fails
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
@@ -70,9 +57,9 @@ jobs:
 
       - name: Build and Push Docker Image (consider multi-stage)
         run: |
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
-            docker build -t samreenraza40/microarray_data_analysis_scripts:latest . && \
-            docker push samreenraza40/microarray_data_analysis_scripts:latest
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker build -t samreenraza40/microarray_data_analysis_scripts:latest .
+          docker push samreenraza40/microarray_data_analysis_scripts:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
