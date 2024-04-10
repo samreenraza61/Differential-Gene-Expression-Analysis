@@ -1,13 +1,4 @@
-# Use the DVC container image as the base
-FROM dvcorg/cml:latest
-
-# Install system dependencies
-RUN apt-get update && \
-    apt-get install -y \
-    r-base \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libxml2-dev
+FROM rocker/verse:latest  # Replace with a minimal R image if preferred
 
 # Install R packages
 RUN R -e 'install.packages(c("BiocManager", "oligo", "GenomicRanges", "Biostrings", "SummarizedExperiment", "MatrixGenerics", "DelayedArray", "oligoClasses", "Biobase", "multiClust", "limma", "EnhancedVolcano", "diffcoexp", "clusterProfiler", "enrichplot", "pathview", "org.Hs.eg.db", "pheatmap", "ggplot2", "amap", "ggrepel", "openxlsx", "readxl", "ggridges"))'
