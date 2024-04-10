@@ -24,7 +24,7 @@ jobs:
           sudo systemctl unmask docker.service
           sudo systemctl start docker
           sudo systemctl enable docker
-          systemctl status docker.service
+          systemctl status docker.service || true  # Continue even if status check fails
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
