@@ -49,5 +49,3 @@ jobs:
           Rscript scripts/GSE26712_Microarraydataanalysis.R
           Rscript scripts/GSE54388_Microarray-dataanalysis.R
           Rscript scripts/GSE18520_Microarraydataanalysis.R
-          
-          
