@@ -3,17 +3,9 @@ name: Microarray data analysis
 on: [push]
 
 jobs:
-  buildx:
+  build:
     runs-on: ubuntu-latest
-    container: docker://dvcorg/cml:latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # Additional steps for Docker setup, R setup, package installation, etc.
       - name: Install Docker
         run: |
           sudo apt-get update
@@ -60,14 +52,12 @@ jobs:
           R -e 'source("scripts/GSE26712_Microarraydataanalysis.R")'
           R -e 'source("scripts/GSE54388_Microarray-dataanalysis.R")'
           R -e 'source("scripts/GSE18520_Microarraydataanalysis.R")'
-          
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: dockerfile
-          push: true
-          tags: samreenraza40/microarray_data_analysis_scripts:latest
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+          - name: Build and Push Docker Image
+            run: |
+              docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
+                docker build -t samreenraza40/microarray_data_analysis_scripts:latest . && \
+                docker push samreenraza40/microarray_data_analysis_scripts:latest
+              env:
+                DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
