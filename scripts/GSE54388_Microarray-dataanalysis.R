@@ -1,5 +1,18 @@
 # Affymetrix Microarray Data Analysis:
 
+# Installation of Required Packages:
+
+# List of required packages
+packages <- c(
+  "oligo", "Biobase", "ggplot2", "amap", "multiClust",
+  "limma", "pheatmap", "ggrepel", "EnhancedVolcano",
+  "GenomicRanges", "diffcoexp", "openxlsx", "clusterProfiler",
+  "DOSE", "enrichplot", "org.Hs.eg.db", "pathview"
+)
+
+# Install packages and their dependencies
+install.packages(packages, dependencies = TRUE)
+
 # Load required packages :
 
 library(oligo)
