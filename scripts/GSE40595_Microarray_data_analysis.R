@@ -1,17 +1,6 @@
 # Affymetrix Microarray Data Analysis:
 
-# Step:01  
-#Installation Packages:
-# List of required packages
-packages <- c(
-  "oligo", "Biobase", "ggplot2", "amap", "multiClust",
-  "limma", "pheatmap", "ggrepel", "EnhancedVolcano",
-  "GenomicRanges", "diffcoexp", "openxlsx", "clusterProfiler",
-  "DOSE", "enrichplot", "org.Hs.eg.db", "pathview"
-)
-
-# Install packages and their dependencies
-install.packages(packages, dependencies = TRUE)
+# Step:01 
 
 # Import microarray expression data as “ExpressionSet”
 #Perform Normalization
