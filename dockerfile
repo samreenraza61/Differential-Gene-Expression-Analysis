@@ -1,5 +1,5 @@
-# Use an official Ubuntu as a parent image
-FROM ubuntu:latest
+# Use the same base image as in your YAML file
+FROM dvcorg/cml:latest
 
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
