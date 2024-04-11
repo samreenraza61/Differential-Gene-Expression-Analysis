@@ -1,16 +1,34 @@
-FROM rocker/verse:latest  # Replace with a minimal R image if preferred
+# Use an official Ubuntu as a parent image
+FROM ubuntu:latest
+
+# Set environment variables for R installation
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    r-base \
+    r-base-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev
 
 # Install R packages
-RUN R -e 'install.packages(c("BiocManager", "oligo", "GenomicRanges", "Biostrings", "SummarizedExperiment", "MatrixGenerics", "DelayedArray", "oligoClasses", "Biobase", "multiClust", "limma", "EnhancedVolcano", "diffcoexp", "clusterProfiler", "enrichplot", "pathview", "org.Hs.eg.db", "pheatmap", "ggplot2", "amap", "ggrepel", "openxlsx", "readxl", "ggridges"))'
+RUN R -e "install.packages(c('BiocManager', 'oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges'))"
+# Copy scripts into the container
+COPY scripts/ /scripts/
 
-# Copy R scripts
-COPY scripts /scripts
-
-# Copy required additional files
-COPY Required_files /Required_files
+# Copy required files and datasets
+COPY Required_files/ /Required_files/
+COPY GSE18520_RAW/ /GSE18520_RAW/
+COPY GSE26712_RAW/ /GSE26712_RAW/
+COPY GSE40595_RAW/ /GSE40595_RAW/
+COPY GSE54388_RAW/ /GSE54388_RAW/
 
 # Set the working directory
-WORKDIR /scripts
+WORKDIR /scripts/
 
 # Run R scripts
-CMD ["R", "-e", "source('GSE40595_Microarray_data_analysis.R'); source('GSE26712_Microarraydataanalysis.R'); source('GSE54388_Microarray-dataanalysis.R'); source('GSE18520_Microarraydataanalysis.R')"]
+CMD ["Rscript", "GSE40595_Microarray_data_analysis.R"]
+CMD ["Rscript", "GSE26712_Microarraydataanalysis.R"]
+CMD ["Rscript", "GSE54388_Microarray-dataanalysis.R"]
+CMD ["Rscript", "GSE18520_Microarraydataanalysis.R"]
