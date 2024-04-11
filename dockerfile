@@ -23,13 +23,14 @@ COPY scripts/ /scripts/
 
 # Copy required files and datasets
 COPY Required_files/ /Required_files/
-COPY GSE18520_RAW/ /GSE18520_RAW/
-COPY GSE26712_RAW/ /GSE26712_RAW/
-COPY GSE40595_RAW/ /GSE40595_RAW/
-COPY GSE54388_RAW/ /GSE54388_RAW/
+COPY GSE18520_RAW /GSE18520_RAW/
+COPY GSE26712_RAW /GSE26712_RAW/
+COPY GSE40595_RAW /GSE40595_RAW/
+COPY GSE54388_RAW /GSE54388_RAW/
 
 # Set the working directory
 WORKDIR /scripts/
+
 
 # Run R scripts
 CMD ["Rscript", "GSE40595_Microarray_data_analysis.R"]
