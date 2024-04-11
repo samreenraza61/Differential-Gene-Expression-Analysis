@@ -22,7 +22,7 @@ RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'Summar
 RUN mkdir /data
 
 # Copy scripts into the /data directory
-COPY scripts/ /data/scripts/
+COPY scripts/ /data/
 
 # Copy required files and datasets into the /data directory
 COPY GSE40595_RAW/ /data/GSE40595_RAW/
