@@ -21,6 +21,7 @@ RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'Summar
 # Copy scripts into the container
 COPY scripts/ /scripts/
 
+
 # Copy required files and datasets
 COPY Required_files/ /Required_files/
 COPY GSE18520_RAW /GSE18520_RAW/
