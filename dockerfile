@@ -31,7 +31,11 @@ COPY GSE54388_RAW /GSE54388_RAW/
 
 # Set the working directory
 WORKDIR /scripts/
-
+WORKDIR /GSE18520_RAW/
+WORKDIR /GSE26712_RAW/
+WORKDIR /GSE40595_RAW/
+WORKDIR /GSE54388_RAW/
+WORKDIR /Required_files/
 
 # Run R scripts
 CMD ["Rscript", "GSE40595_Microarray_data_analysis.R"]
