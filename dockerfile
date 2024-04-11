@@ -18,27 +18,19 @@ RUN R -e "install.packages('BiocManager')"
 # Install R packages using BiocManager
 RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges'))"
 
-# Copy scripts into the container
-COPY scripts/ /scripts/
+# Create a directory for all the folders and scripts
+RUN mkdir /data
 
+# Copy scripts into the /data directory
+COPY scripts/ /data/scripts/
 
-# Copy required files and datasets
-COPY Required_files/ /Required_files/
-COPY GSE18520_RAW /GSE18520_RAW/
-COPY GSE26712_RAW /GSE26712_RAW/
-COPY GSE40595_RAW /GSE40595_RAW/
-COPY GSE54388_RAW /GSE54388_RAW/
+# Copy required files and datasets into the /data directory
+COPY GSE40595_RAW/ /data/GSE40595_RAW/
+COPY Required_files/ /data/Required_files/
 
-# Set the working directory
-WORKDIR /scripts/
-WORKDIR /GSE18520_RAW/
-WORKDIR /GSE26712_RAW/
-WORKDIR /GSE40595_RAW/
-WORKDIR /GSE54388_RAW/
-WORKDIR /Required_files/
+# Set the working directory to /data
+WORKDIR /data/
 
 # Run R scripts
 CMD ["Rscript", "GSE40595_Microarray_data_analysis.R"]
-CMD ["Rscript", "GSE26712_Microarraydataanalysis.R"]
-CMD ["Rscript", "GSE54388_Microarray-dataanalysis.R"]
-CMD ["Rscript", "GSE18520_Microarraydataanalysis.R"]
+
