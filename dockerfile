@@ -12,8 +12,12 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libxml2-dev
 
-# Install R packages
-RUN R -e "install.packages(c('BiocManager', 'oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges'))"
+# Install Bioconductor package
+RUN R -e "install.packages('BiocManager')
+
+# Install R packages using BiocManager
+RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges'))"
+
 # Copy scripts into the container
 COPY scripts/ /scripts/
 
