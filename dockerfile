@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev
+    libfontconfig1-dev \
+    libfreetype6-dev \
+    pkg-config
 
 # Install Bioconductor package
 RUN R -e "install.packages('BiocManager')"
