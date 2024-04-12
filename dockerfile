@@ -10,14 +10,15 @@ RUN apt-get update && apt-get install -y \
     r-base-dev \
     libcurl4-openssl-dev \
     libssl-dev \
-    libxml2-dev  \
+    libxml2-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
     pkg-config\
     libharfbuzz-dev \
     libproj-dev \
     libcairo2-dev \
-    libfribidi-dev
+    libfribidi-dev \
+    libjpeg-dev
 
 # Install Bioconductor package
 RUN R -e "install.packages('BiocManager')"
