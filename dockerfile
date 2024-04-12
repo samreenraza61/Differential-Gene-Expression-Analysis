@@ -20,14 +20,16 @@ RUN apt-get update && apt-get install -y \
     libfribidi-dev \
     libjpeg-dev
 
-# Install Bioconductor package
-RUN R -e "install.packages('BiocManager')"
 
-install.packages("devtools")
-devtools::install_github("YuLab-SMU/ggtree")
+# Install R and Bioconductor
+RUN R -e "install.packages('BiocManager')"
+RUN R -e "BiocManager::install(version = '3.16')"
+
+# Install ggplot2 <=3.3.6
+RUN R -e "remotes::install_version('ggplot2', version = '3.3.6')"
 
 # Install R packages using BiocManager
-RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp','clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
+RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'ggtree', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp','clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
 
 # Create a directory for all the folders and scripts
 RUN mkdir /data
