@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     pkg-config\
     libharfbuzz-dev \
     libproj-dev \
-    libcairo2-dev
+    libcairo2-dev \
+    libfribidi-dev
 
 # Install Bioconductor package
 RUN R -e "install.packages('BiocManager')"
