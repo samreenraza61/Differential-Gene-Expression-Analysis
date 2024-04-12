@@ -23,8 +23,8 @@ RUN apt-get update && apt-get install -y \
 # Install Bioconductor package
 RUN R -e "install.packages('BiocManager')"
 
-# Remove ggtree package if installed
-RUN R -e "if ('ggtree' %in% rownames(installed.packages())) remove.packages('ggtree')"
+# Install ggtree from GitHub repository
+RUN R -e "remotes::install_github('ggtree_3.2.1.tar.gz')"
 
 # Install R packages using BiocManager
 RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'ggtree','clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
