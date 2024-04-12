@@ -51,9 +51,6 @@ jobs:
       - name: Running R scripts 
         run: |  
           Rscript scripts/GSE40595_Microarray_data_analysis.R
-          Rscript scripts/GSE26712_Microarraydataanalysis.R
-          Rscript scripts/GSE54388_Microarray-dataanalysis.R
-          Rscript scripts/GSE18520_Microarraydataanalysis.R
           
       - name: Build and Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v6
