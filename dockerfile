@@ -23,11 +23,8 @@ RUN apt-get update && apt-get install -y \
 # Install Bioconductor package
 RUN R -e "install.packages('BiocManager')"
 
-# Copy the downloaded ggtree source package into the Docker image
-COPY ggtree_3.2.1.tar.gz /data/
-
-# Install ggtree from the downloaded source package
-RUN R CMD INSTALL /data/ggtree_3.2.1.tar.gz
+install.packages("devtools")
+devtools::install_github("YuLab-SMU/ggtree")
 
 # Install R packages using BiocManager
 RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp','clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
