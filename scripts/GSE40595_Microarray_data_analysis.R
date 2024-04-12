@@ -31,7 +31,7 @@ getClass("ExpressionFeatureSet")
 
 # Find the maximum expression value
 max(exprs(expression_feature_set))
-
+print("Max expr")
 # Get the filenames of the samples
 filename <- sampleNames(rawData)
 
@@ -49,7 +49,7 @@ sampleNames(rawData) <- sampleNames
 # Define groups based on sample names
 pData(rawData)$group <- ifelse(grepl("HOSE|NS", filename), "Normal", "Ovarian Cancer")
 #pData(rawData)
-
+print("QC")
 # Check Quality Control = rawdata
 
 exp_raw <- log2(exprs(expression_feature_set))
@@ -62,7 +62,7 @@ sd_ratio <- sqrt(percentVar[2] / percentVar[1])
 dataGG <- data.frame(PC1 = PCA_raw$x[,1], PC2 = PCA_raw$x[,2],
                      Disease = pData(rawData)$group,
                      Sample = sampleNames(rawData))
-
+print("above PCA plot")
 # Create the PCA plot
 ggplot(dataGG, aes(PC1, PC2)) +
   geom_point(aes(shape = Disease, colour = Disease)) +
