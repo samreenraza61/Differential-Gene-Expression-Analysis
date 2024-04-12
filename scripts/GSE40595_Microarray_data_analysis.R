@@ -77,14 +77,15 @@ ggplot(dataGG, aes(PC1, PC2)) +
 # boxplot - rawdata
 oligo::boxplot(rawData, target = "core", 
                main = "Boxplot of log2-intensitites for the raw data")
-
+print("Above Normalization")
 # Normalization:
 normData <- rma(rawData)
 ## Background correcting
 ## Normalizing
 ## Calculating Expression
+print("Done normalization")
 boxplot(normData)
-
+print("Boxplot of norm data")
 # Quality assessment of the calibrated data
 
 exp_palmieri <- Biobase::exprs(normData)
@@ -167,7 +168,7 @@ write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = N
 probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 5, Poly = NULL,
                            Adaptive = NULL, cutoff = NULL)
 #probe_num
-
+print("Above FS")
 # Perform feature selection
 ranked_cv <- probe_ranking(input = exp_file, 
                            probe_number = probe_num,  # Number of probes to select
@@ -176,7 +177,7 @@ ranked_cv <- probe_ranking(input = exp_file,
                            method = "CV_Guided")
 
 #ranked_cv 
-
+print("DONE FS")
 #Step:03 Differential Gene Expression Analysis
 
 # Load required packages
@@ -189,7 +190,7 @@ Groups <- ifelse(grepl("HOSE|NS", colnames(ranked_cv)), "Normal", "Ovarian")
 
 # Create design matrix
 design <- model.matrix(~factor(Groups))
-
+print("lmfit")
 # Fit linear model
 fit <- lmFit(ranked_cv, design)
 
@@ -237,7 +238,7 @@ res=diffcoexp(exprs.1 = normal, exprs.2 = ovarian, r.method = "spearman" )
 DCGs <- res$DCGs
 
 library(openxlsx)
-
+print("DCGS")
 # Write the DCGs data frame to the Excel file
 write.xlsx(DCGs, "DCGs_GSE40595.xlsx", rowNames = FALSE)
 
@@ -252,7 +253,7 @@ library(org.Hs.eg.db)
 organism = "org.Hs.eg.db" 
 
 library(readxl)
-
+print("GEO")
 file2<-"Required_files/GOinput_GSE40595.xlsx"
 df = read_excel(file2)
 original_gene_list <- df$logFC
@@ -287,7 +288,7 @@ dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
 #KEGG gene set enrichment analysis :
 
 library(readxl)
-
+print("kegg")
 file3<-"Required_files/kegg_input_GSE40595.xlsx"
 df1 = read_excel(file3)
 original_gene_list1 <- df1$logFC
@@ -315,10 +316,11 @@ dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") + f
 ridgeplot(kk2) + labs(x = "enrichment distribution")
 
 library(pathview)
-
+print("pathway analysis")
 # Produce the native KEGG plot (PNG)
 hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = kegg_organism)
 
 # Produce a different plot (PDF) (not displayed here)
 hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = kegg_organism, kegg.native = F)
 knitr::include_graphics("hsa05235.pathview.png")
+print("DONE ALL")
