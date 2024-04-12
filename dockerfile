@@ -21,12 +21,15 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev
 
 
-# Install R and Bioconductor
+# Install Bioconductor
 RUN R -e "install.packages('BiocManager')"
-RUN R -e "BiocManager::install(version = '3.16')"
 
-# Install the latest version of ggtree from Bioconductor
-RUN R -e "BiocManager::install('ggtree', version = '3.6.1')"
+# Run R command to install devtools package
+RUN R -e "install.packages('devtools')"
+
+# Run R command to install ggtree from GitHub
+RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
+
 
 # Install R packages using BiocManager
 RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp','clusterProfiler', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
