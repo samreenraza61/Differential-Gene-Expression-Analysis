@@ -60,11 +60,3 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           dockerfile: dockerfile
-
-      - name: Pull Docker image
-        run: |
-          docker pull samreenraza40/microarray_data_analysis_scripts:latest
-
-      - name: Run Docker image
-        run: |
-          docker run --rm samreenraza40/microarray_data_analysis_scripts:latest
