@@ -253,7 +253,7 @@ suppressPackageStartupMessages(library(ggplot2))
 library(R.utils)
 
 # Set the download method for clusterProfiler
-R.utils::setOption("clusterProfiler.download.method", "libcurl")
+R.utils::setOption("clusterProfiler.download.method", "wget")
                            
 library(org.Hs.eg.db)
 organism = "org.Hs.eg.db" 
@@ -308,7 +308,7 @@ gene_list1<-na.omit(original_gene_list1)
 # sort the list in decreasing order (required for clusterProfiler)
 gene_list1 = sort(gene_list1, decreasing = TRUE)
 
-kk2 <- gseKEGG(geneList     = gene_list1,
+kk2 <- gseKEGG(geneList     = gene_list1$ENTREZ_ID,
                organism     = "hsa",
                nPerm        = 10000,
                minGSSize    = 3,
