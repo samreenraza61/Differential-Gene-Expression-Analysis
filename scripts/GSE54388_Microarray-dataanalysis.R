@@ -245,6 +245,7 @@ suppressPackageStartupMessages(library(ggplot2))
 
 library(org.Hs.eg.db)
 organism = "org.Hs.eg.db" 
+kegg_organism <- "hsa"
 
 file2<-"Required_files/GOinput_GSE54388.xlsx"
 df = read_excel(file2)
