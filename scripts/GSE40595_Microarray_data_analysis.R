@@ -249,6 +249,12 @@ library(enrichplot)
 # we use ggplot2 to add x axis labels (ex: ridgeplot)
 suppressPackageStartupMessages(library(ggplot2))
 
+# Load required packages
+library(R.utils)
+
+# Set the download method for clusterProfiler
+R.utils::setOption("clusterProfiler.download.method", "auto")
+                           
 library(org.Hs.eg.db)
 organism = "org.Hs.eg.db" 
 kegg_organism <- "hsa"                          
