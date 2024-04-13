@@ -253,7 +253,7 @@ suppressPackageStartupMessages(library(ggplot2))
 library(R.utils)
 
 # Set the download method for clusterProfiler
-R.utils::setOption("clusterProfiler.download.method", "wget")
+R.utils::setOption("clusterProfiler.download.method", "libcurl")
                            
 library(org.Hs.eg.db)
 organism = "org.Hs.eg.db" 
