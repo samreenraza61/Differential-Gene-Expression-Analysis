@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 RUN R -e "install.packages('BiocManager')"
 
 # Run R command to install devtools package
-RUN R -e "install.packages('devtools')"
+RUN R -e "install.packages(c('devtools','R.utils'))"
 
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
