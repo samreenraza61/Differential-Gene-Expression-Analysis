@@ -286,42 +286,43 @@ gse <- gseGO(geneList=gene_list,
 
 require(DOSE)
 dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
+print("Done All")
 
 #KEGG gene set enrichment analysis :
 
-library(readxl)
-print("kegg")
-file3<-"Required_files/kegg_input_GSE40595.xlsx"
-df1 = read_excel(file3)
-original_gene_list1 <- df1$logFC
+#library(readxl)
+#print("kegg")
+#file3<-"Required_files/kegg_input_GSE40595.xlsx"
+#df1 = read_excel(file3)
+#original_gene_list1 <- df1$logFC
 # name the vector
-names(original_gene_list1) <- df1$ENTREZ_ID
+#names(original_gene_list1) <- df1$ENTREZ_ID
 # omit any NA values 
-gene_list1<-na.omit(original_gene_list1)
+#gene_list1<-na.omit(original_gene_list1)
 
 # sort the list in decreasing order (required for clusterProfiler)
-gene_list1 = sort(gene_list1, decreasing = TRUE)
+#gene_list1 = sort(gene_list1, decreasing = TRUE)
 
-kk2 <- gseKEGG(geneList     = gene_list1,
-               organism     = "hsa",
-               nPerm        = 10000,
-               minGSSize    = 3,
-               maxGSSize    = 800,
-               pvalueCutoff = 0.05,
-               pAdjustMethod = "none",
-               keyType       = "ncbi-geneid")
+#kk2 <- gseKEGG(geneList     = gene_list1,
+ #              organism     = "hsa",
+            #   nPerm        = 10000,
+              # minGSSize    = 3,
+             #  maxGSSize    = 800,
+            #   pvalueCutoff = 0.05,
+             #  pAdjustMethod = "none",
+              # keyType       = "ncbi-geneid")
 
 
-dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") + facet_grid(.~.sign)
+#dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") + facet_grid(.~.sign)
 
-ridgeplot(kk2) + labs(x = "enrichment distribution")
+#ridgeplot(kk2) + labs(x = "enrichment distribution")
 
-library(pathview)
-print("pathway analysis")
+#library(pathview)
+#print("pathway analysis")
 # Produce the native KEGG plot (PNG)
-hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = "hsa")
+#hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = "hsa")
 
 # Produce a different plot (PDF) (not displayed here)
-hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = "hsa", kegg.native = F)
-knitr::include_graphics("hsa05235.pathview.png")
-print("DONE ALL")
+#hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = "hsa", kegg.native = F)
+#knitr::include_graphics("hsa05235.pathview.png")
+#print("DONE ALL")
