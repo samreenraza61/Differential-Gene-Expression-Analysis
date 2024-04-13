@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: Install Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install docker.io -y 
+          apt-get update
+          apt-get install docker.io -y 
           
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
