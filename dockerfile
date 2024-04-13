@@ -18,7 +18,9 @@ RUN apt-get update && apt-get install -y \
     libproj-dev \
     libcairo2-dev \
     libfribidi-dev \
-    libjpeg-dev
+    libjpeg-dev \
+    wget 
+
 
 
 # Install Bioconductor
