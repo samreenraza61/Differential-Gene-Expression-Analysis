@@ -302,9 +302,8 @@ gene_list1<-na.omit(original_gene_list1)
 # sort the list in decreasing order (required for clusterProfiler)
 gene_list1 = sort(gene_list1, decreasing = TRUE)
 
-kegg_organism = "hsa"
 kk2 <- gseKEGG(geneList     = gene_list1,
-               organism     = kegg_organism,
+               organism     = "hsa",
                nPerm        = 10000,
                minGSSize    = 3,
                maxGSSize    = 800,
@@ -320,9 +319,9 @@ ridgeplot(kk2) + labs(x = "enrichment distribution")
 library(pathview)
 print("pathway analysis")
 # Produce the native KEGG plot (PNG)
-hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = kegg_organism)
+hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = "hsa")
 
 # Produce a different plot (PDF) (not displayed here)
-hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = kegg_organism, kegg.native = F)
+hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = "hsa", kegg.native = F)
 knitr::include_graphics("hsa05235.pathview.png")
 print("DONE ALL")
