@@ -31,6 +31,7 @@ RUN R -e "install.packages(c('devtools','R.utils'))"
 
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
+RUN R -e "install.packages('remotes'); remotes::install_github('YuLab-SMU/DOSE')"
 RUN R -e "devtools::install_github('YuLab-SMU/clusterProfiler')"
 
 # Install R packages using BiocManager
