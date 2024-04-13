@@ -251,6 +251,8 @@ suppressPackageStartupMessages(library(ggplot2))
 
 library(org.Hs.eg.db)
 organism = "org.Hs.eg.db" 
+kegg_organism <- "hsa"                          
+                           
 
 library(readxl)
 print("GEO")
