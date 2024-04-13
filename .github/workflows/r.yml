@@ -5,7 +5,6 @@ on: [push]
 jobs:
   run:
     runs-on: windows-latest
-    container: docker://dvcorg/cml:latest
 
     steps:
       - name: Install Docker
