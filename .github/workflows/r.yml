@@ -11,7 +11,6 @@ jobs:
         run: |
           choco install docker-desktop -y
           choco install docker-cli -y
-          steps:
           
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
