@@ -1,11 +1,11 @@
 # Use official Microsoft Windows Server Core Image (minimal)
 FROM mcr.microsoft.com/windows/servercore/iis
 
-# Download and install R for Windows
-# Modify the URL based on the desired R version
-RUN powershell -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://cran.r-project.org/bin/windows/base/R-4.3.3-win.exe' -OutFile RInstaller.exe; \
-    Start-Process -Wait -FilePath .\RInstaller.exe -ArgumentList '/quiet /norestart'; \
-    Remove-Item RInstaller.exe
+# Install Chocolatey
+RUN powershell -Command Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Install R using Chocolatey
+RUN choco install r -y
 
 # Add R to the system PATH
 RUN setx /M PATH "%PATH%;C:\Program Files\R\R-4.3.3\bin"
