@@ -5,14 +5,16 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 ENV R_VERSION 4.1.0
 
 # Download and install R
-RUN curl -o R.exe https://cran.r-project.org/bin/windows/base/R-${R_VERSION}-win.exe && \
-    Start-Process -Wait -FilePath .\R.exe -ArgumentList '/SILENT', '/DIR="C:\Program Files\R"', '/COMPONENTS="main,x64"', '/LOG' && \
-    del .\R.exe
+RUN powershell -Command $ErrorActionPreference = 'Stop'; \
+    Invoke-WebRequest -Uri "https://cran.r-project.org/bin/windows/base/R-${env:R_VERSION}-win.exe" -OutFile R.exe; \
+    Start-Process -Wait -FilePath .\R.exe -ArgumentList '/SILENT', '/DIR="C:\Program Files\R"', '/COMPONENTS="main,x64"', '/LOG'; \
+    Remove-Item -Force R.exe
 
 # Download and install Rtools
-RUN curl -o Rtools.exe https://cran.r-project.org/bin/windows/Rtools/rtools40-x86_64.exe && \
-    Start-Process -Wait -FilePath .\Rtools.exe -ArgumentList '/SILENT', '/DIR="C:\Rtools"', '/COMPONENTS="main,x64"', '/LOG' && \
-    del .\Rtools.exe
+RUN powershell -Command $ErrorActionPreference = 'Stop'; \
+    Invoke-WebRequest -Uri "https://cran.r-project.org/bin/windows/Rtools/rtools40-x86_64.exe" -OutFile Rtools.exe; \
+    Start-Process -Wait -FilePath .\Rtools.exe -ArgumentList '/SILENT', '/DIR="C:\Rtools"', '/COMPONENTS="main,x64"', '/LOG'; \
+    Remove-Item -Force Rtools.exe
 
 # Add R and Rtools to the PATH
 RUN setx /M PATH "$($Env:PATH);C:\Program Files\R\R-${R_VERSION}\bin;C:\Rtools\bin;C:\Rtools\mingw64\bin"
@@ -33,14 +35,14 @@ RUN R.exe -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'Su
 RUN mkdir C:\data
 
 # Copy scripts into the /data directory
-COPY scripts/ C:/data/
+ADD scripts/ C:/data/
 
 # Copy required files and datasets into the /data directory
-COPY GSE40595_RAW/ C:/data/GSE40595_RAW/
-COPY Required_files/ C:/data/Required_files/
+ADD GSE40595_RAW/ C:/data/GSE40595_RAW/
+ADD Required_files/ C:/data/Required_files/
 
 # Set the working directory to /data
-WORKDIR /data/
+WORKDIR C:\data
 
 # Run R scripts
 CMD ["Rscript", "GSE40595_Microarray_data_analysis.R"]
