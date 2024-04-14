@@ -4,22 +4,12 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 # Set environment variables for R installation
 ENV R_VERSION 4.1.0
 
-# Install required packages
-RUN apt-get update && apt-get install -y \
-    r-base \
-    r-base-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libxml2-dev \
-    libfontconfig1-dev \
-    libfreetype6-dev \
-    pkg-config\
-    libharfbuzz-dev \
-    libproj-dev \
-    libcairo2-dev \
-    libfribidi-dev \
-    libjpeg-dev \
-    wget e
+# Download and install R
+RUN powershell -Command $ErrorActionPreference = 'Stop'; \
+    $url = "https://cran.r-project.org/bin/windows/base/R-${env:R_VERSION}-win.exe"; \
+    Invoke-WebRequest -Uri $url -OutFile R.exe; \
+    Start-Process -Wait -FilePath .\R.exe -ArgumentList '/SILENT', '/DIR="C:\Program Files\R"', '/COMPONENTS="main,x64"', '/LOG'; \
+    Remove-Item -Force R.exe
 
 # Install R packages using BiocManager
 RUN R.exe -e "install.packages('BiocManager')"
