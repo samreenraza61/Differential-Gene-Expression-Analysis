@@ -5,12 +5,13 @@ on: [push]
 jobs:
   run:
     runs-on: windows-latest
-    
+
     steps:
       - name: Install Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install docker.io -y 
+          choco install docker-desktop -y
+          choco install docker-cli -y
+          steps:
           
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
