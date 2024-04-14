@@ -3,7 +3,9 @@ FROM mcr.microsoft.com/windows/server/insider:10.0.20348.1
 
 # Download and install R for Windows
 # Modify the URL based on the desired R version
-RUN powershell -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://cran.r-project.org/bin/windows/base/R-4.3.3-win.exe' -OutFile RInstaller.exe && Start-Process RInstaller.exe -Wait -ArgumentList '/quiet /norestart' -FilePath .; Remove-Item RInstaller.exe
+RUN powershell -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://cran.r-project.org/bin/windows/base/R-4.3.3-win.exe' -OutFile RInstaller.exe; \
+    Start-Process -Wait -FilePath .\RInstaller.exe -ArgumentList '/quiet /norestart'; \
+    Remove-Item RInstaller.exe
 
 # Set environment variables (consider using docker secrets)
 ENV R_HOME C:/R/x86_x64  # Adjust path based on your installation
