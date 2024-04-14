@@ -8,11 +8,9 @@ RUN powershell -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://
 # Set environment variables (consider using docker secrets)
 ENV R_HOME C:/R/x86_x64  # Adjust path based on your installation
 
-# Install required R packages (use slightly different syntax)
-RUN Rscript -e 'install.packages(c("BiocManager", "devtools", "R.utils", "ggtree", "oligo", "GenomicRanges", 
-"Biostrings", "SummarizedExperiment", "MatrixGenerics", "DelayedArray", "oligoClasses", "Biobase", "multiClust", "limma", 
-"EnhancedVolcano", "diffcoexp", "enrichplot", "pathview", "org.Hs.eg.db", "pheatmap", "ggplot2", "amap", "ggrepel", 
-"openxlsx", "readxl", "ggridges", "pd.hg.u133.plus.2"), repos="https://cran.rstudio.com/")'
+RUN Rscript -e 'install.packages(c("Biostrings", "devtools", "R.utils", "ggplot2", "oligo", "GenomicRanges", "SummarizedExperiment", 
+"MatrixGenerics", "DelayedArray", "oligoClasses", "Biobase", "multiClust", "limma", "EnhancedVolcano", "diffcoexp", "enrichplot", 
+"pathview", "org.Hs.eg.db", "pheatmap", "amap", "ggrepel", "openxlsx", "readxl", "ggridges", "pd.hg.u133.plus.2"), repos="https://cran.rstudio.com/") && source("scripts/GSE40595_Microarray_data_analysis.R")'
 
 # Create a directory for all the folders and scripts
 RUN mkdir C:\data
