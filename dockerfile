@@ -1,5 +1,5 @@
 # Use official Microsoft Windows Server Core Image (minimal)
-FROM mcr.microsoft.com/windows/servercore/insider
+FROM mcr.microsoft.com/windows/server/insider
 
 # Download and install R for Windows
 # Modify the URL based on the desired R version
