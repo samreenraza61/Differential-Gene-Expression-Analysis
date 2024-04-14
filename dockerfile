@@ -1,5 +1,5 @@
 # Use official Microsoft Windows Server Core Image (minimal)
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM windows:latest
 
 # Install R for Windows
 # (Download the installer URL based on your architecture)
