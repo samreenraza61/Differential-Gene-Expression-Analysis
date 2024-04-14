@@ -1,9 +1,9 @@
 # Use official Microsoft Windows Server Core Image (minimal)
-FROM mcr.microsoft.com/windows/server/insider
+FROM mcr.microsoft.com/windows/servercore/iis
 
 # Download and install R for Windows
 # Modify the URL based on the desired R version
-RUN powershell -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://cran.r-project.org/bin/windows/x86-64/base/R-4.2.1-x86_64.exe' -OutFile RInstaller.exe && Start-Process RInstaller.exe -Wait -ArgumentList '/quiet /norestart' -FilePath .; Remove-Item RInstaller.exe
+RUN powershell -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://cran.r-project.org/bin/windows/base/R-4.3.3-win.exe' -OutFile RInstaller.exe && Start-Process RInstaller.exe -Wait -ArgumentList '/quiet /norestart' -FilePath .; Remove-Item RInstaller.exe
 
 # Set environment variables (consider using docker secrets)
 ENV R_HOME C:/R/x86_x64  # Adjust path based on your installation
