@@ -1,0 +1,26 @@
+name: Build and Push Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_push_docker_image:
+    runs-on: windows-latest
+
+    steps:
+      - name: Install Docker
+        run: |
+          choco install docker-desktop -y
+          choco install docker-cli -y
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Build and Push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: samreenraza40/microarray_data_analysis_scripts
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: dockerfile
