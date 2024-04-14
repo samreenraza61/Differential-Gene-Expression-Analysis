@@ -1,5 +1,5 @@
 # Use official Microsoft Windows Server Core Image (minimal)
-FROM microsoft/windowsservercore:1803
+FROM mcr.microsoft.com/windows/nanoserver:1809
 
 # Download and install R for Windows
 # Modify the URL based on the desired R version
