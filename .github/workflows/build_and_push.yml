@@ -11,7 +11,7 @@ jobs:
       - name: Install Docker
         run: |
           sudo apt-get update
-          sudo apt-get upgrade -y
+          sudo apt-get remove containerd -y  # Remove conflicting package
           sudo apt-get install --no-install-recommends docker.io -y
 
       - name: Check out repository
