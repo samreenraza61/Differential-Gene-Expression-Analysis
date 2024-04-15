@@ -38,6 +38,7 @@ RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'Summar
 
 # Download and install clusterProfiler directly from Bioconductor repository
 RUN R -e "install.packages('https://bioconductor.org/packages/release/bioc/src/contrib/clusterProfiler_4.10.1.tar.gz', repos = NULL, type = 'source')"
+RUN R -e "install.packages("https://bioconductor.org/packages/release/bioc/src/contrib/DOSE_3.28.2.tar.gz", repos = NULL, type = "source", force = TRUE)"
 
 # Create a directory for all the folders and scripts
 RUN mkdir /data
