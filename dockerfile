@@ -4,6 +4,9 @@ FROM ubuntu:latest
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
 
+# Import the missing public key
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 51716619E084DAB9
+
 # Update Ubuntu package manager and install software-properties-common for add-apt-repository
 RUN apt-get update && apt-get install -y software-properties-common
 
