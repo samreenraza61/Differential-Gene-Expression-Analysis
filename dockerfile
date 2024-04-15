@@ -1,4 +1,5 @@
-FROM rocker/r-ver:4.1.1
+# Use an official Ubuntu as a parent image
+FROM ubuntu:latest
 
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
@@ -32,7 +33,10 @@ RUN R -e "install.packages(c('devtools','R.utils'))"
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
 
 # Install R packages using BiocManager
-RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'clusterProfiler', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
+RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
+
+# Install clusterProfiler from GitHub
+RUN R -e "devtools::install_github('YuLab-SMU/clusterProfiler')"
 
 # Create a directory for all the folders and scripts
 RUN mkdir /data
