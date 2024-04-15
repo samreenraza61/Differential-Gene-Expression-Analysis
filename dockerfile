@@ -1,5 +1,5 @@
 # Use an official Ubuntu as a parent image
-FROM ubuntu:latest
+FROM rocker/r-ver:latest
 
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
@@ -19,13 +19,14 @@ RUN apt-get update && apt-get install -y \
     libcairo2-dev \
     libfribidi-dev \
     libjpeg-dev \
-    libx11-dev
+    libx11-dev \
+    libglpk40
 
 # Install Bioconductor
 RUN R -e "install.packages('BiocManager')"
 
 # Run R command to install devtools package
-RUN R -e "install.packages('devtools')"
+RUN R -e "install.packages(c('devtools','igraph'))"
 
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
