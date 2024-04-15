@@ -27,14 +27,17 @@ RUN R -e "install.packages('BiocManager')"
 # Install devtools and remotes packages
 RUN R -e "install.packages('devtools')"
 
+# Install downloader and gson packages
+RUN R -e "install.packages(c('downloader', 'gson'))"
+
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
 
 # Install R packages using BiocManager
 RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
 
-# Install clusterProfiler from GitHub
-RUN R -e "devtools::install_github('YuLab-SMU/clusterProfiler')"
+# Download and install clusterProfiler directly from Bioconductor repository
+RUN R -e "install.packages('https://bioconductor.org/packages/release/bioc/src/contrib/clusterProfiler_4.10.1.tar.gz', repos = NULL, type = 'source')"
 
 # Create a directory for all the folders and scripts
 RUN mkdir /data
