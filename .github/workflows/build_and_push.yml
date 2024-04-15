@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_and_push_docker_image:
+  run:
     runs-on: ubuntu-latest
+    container: docker://dvcorg/cml:latest
 
     steps:
       - name: Install Docker
         run: |
           sudo apt-get update
-          sudo apt-get remove containerd -y  # Remove conflicting package
-          sudo apt-get install --no-install-recommends docker.io -y
+          sudo apt-get install docker.io -y
 
       - name: Check out repository
         uses: actions/checkout@v3
