@@ -34,7 +34,7 @@ RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
 RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
 
 # Install clusterProfiler version 4.10.1
-RUN R -e "BiocManager::install('clusterProfiler', version = '4.10.1')"
+RUN R -e "BiocManager::install('clusterProfiler', version = '4.10')"
 
 # Create a directory for all the folders and scripts
 RUN mkdir /data
