@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pull Docker image
-        run: docker pull samreenraza40/microarray_data_analysis_scripts:main-b9d2edf
+        run: docker pull samreenraza40/microarray_data_analysis_scripts:main-dc9760b
 
       - name: Run Docker image
-        run: docker run --rm samreenraza40/microarray_data_analysis_scripts:main-b9d2edf
+        run: docker run --rm samreenraza40/microarray_data_analysis_scripts:main-dc9760b
