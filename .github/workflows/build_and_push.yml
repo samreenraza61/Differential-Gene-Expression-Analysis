@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Install Docker
         run: |
-          choco install docker-desktop -y
-          choco install docker-cli -y
+          sudo apt-get update
+          sudo apt-get install docker.io -y
 
       - name: Check out repository
         uses: actions/checkout@v3
