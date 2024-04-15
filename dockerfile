@@ -1,4 +1,4 @@
-FROM rocker/r-ver:4.1.1
+FROM rocker/r-ver
 
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
