@@ -11,7 +11,8 @@ jobs:
       - name: Install Docker
         run: |
           sudo apt-get update
-          sudo apt-get install docker.io -y
+          sudo apt-get upgrade -y
+          sudo apt-get install --no-install-recommends docker.io -y
 
       - name: Check out repository
         uses: actions/checkout@v3
