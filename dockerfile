@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y \
     libproj-dev \
     libcairo2-dev \
     libfribidi-dev \
-    libjpeg-dev
+    libjpeg-dev \
+    libx11-dev
 
 # Install Bioconductor
 RUN R -e "install.packages('BiocManager')"
