@@ -16,8 +16,11 @@ ENV R_HOME C:/R/x86_x64  # Adjust path based on your installation
 # Install BiocManager to manage Bioconductor packages
 RUN Rscript -e 'install.packages("BiocManager")'
 
-# Use BiocManager to install Bioconductor packages
-RUN Rscript -e "BiocManager::install(c('Biostrings', 'GenomicRanges', 'SummarizedExperiment', 'DelayedArray', 'oligo', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'amap', 'ggrepel', 'pd.hg.u133.plus.2'))"
+# Copy the R script for installing Bioconductor packages
+COPY install_bioconductor_packages.R /
+
+# Run the R script to install Bioconductor packages
+RUN Rscript install_bioconductor_packages.R
 
 # Create a directory for all the folders and scripts
 RUN mkdir C:\data
