@@ -4,10 +4,20 @@ FROM ubuntu:latest
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
 
+# Update Ubuntu package manager and install software-properties-common for add-apt-repository
+RUN apt-get update && apt-get install -y software-properties-common
+
+# Add the repository for the new version of R
+RUN add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+
+# Update package manager again
+RUN apt-get update
+
+# Install the new version of R
+RUN apt-get install -y r-base r-base-dev
+
 # Install required packages
-RUN apt-get update && apt-get install -y \
-    r-base \
-    r-base-dev \
+RUN apt-get install -y \ 
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
