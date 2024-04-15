@@ -1,5 +1,5 @@
 # Use an official Ubuntu as a parent image
-FROM rocker/r-ver:4.1.1
+FROM ubuntu:latest
 
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
