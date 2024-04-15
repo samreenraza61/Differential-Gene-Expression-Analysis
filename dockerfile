@@ -4,6 +4,9 @@ FROM ubuntu:latest
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
 
+# Install gnupg to add GPG keys
+RUN apt-get update && apt-get install -y gnupg
+
 # Import the missing public key
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 51716619E084DAB9
 
