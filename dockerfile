@@ -4,23 +4,25 @@ FROM ubuntu:latest
 # Set environment variables for R installation
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install gnupg to add GPG keys
-RUN apt-get update && apt-get install -y gnupg
+# Update indices
+RUN apt update -qq
 
-# Import the missing public key
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 51716619E084DAB9
+# Install two helper packages we need
+RUN apt install --no-install-recommends -y software-properties-common dirmngr
 
-# Update Ubuntu package manager and install software-properties-common for add-apt-repository
-RUN apt-get update && apt-get install -y software-properties-common
+# Add the signing key (by Michael Rutter) for these repos
+# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
 
-# Add the repository for the new version of R
-RUN add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+# Add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
+RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
 
 # Update package manager again
-RUN apt-get update
+RUN apt update
 
 # Install the new version of R
-RUN apt-get install -y r-base r-base-dev libicu-dev
+RUN apt install -y r-base r-base-dev
 
 # Install required packages
 RUN apt-get install -y \ 
