@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 RUN R -e "install.packages('BiocManager')"
 
 # Install devtools and remotes packages
-RUN R -e "install.packages(c('devtools', 'remotes'))"
+RUN R -e "install.packages('devtools')"
 
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
@@ -34,7 +34,7 @@ RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
 RUN R -e "BiocManager::install(c('oligo', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges','pd.hg.u133.plus.2'))"
 
 # Install clusterProfiler from GitHub
-RUN R -e "remotes::install_github('YuLab-SMU/clusterProfiler')"
+RUN R -e "devtools::install_github('YuLab-SMU/clusterProfiler')"
 
 # Create a directory for all the folders and scripts
 RUN mkdir /data
