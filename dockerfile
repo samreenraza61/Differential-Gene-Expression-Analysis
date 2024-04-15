@@ -19,15 +19,15 @@ RUN apt-get update && apt-get install -y \
     libcairo2-dev \
     libfribidi-dev \
     libjpeg-dev \
-    wget 
-
-
+    libglpk40 \
+    libx11-dev \
+    libglpk40
 
 # Install Bioconductor
 RUN R -e "install.packages('BiocManager')"
 
 # Run R command to install devtools package
-RUN R -e "install.packages(c('devtools','R.utils'))"
+RUN R -e "install.packages(c('devtools','R.utils','tidytree'))"
 
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
