@@ -27,7 +27,9 @@ RUN mkdir C:\data
 
 # Consider using docker volume mounts for data persistence
 COPY scripts/ C:\data\scripts\
+
 COPY GSE40595_RAW/ C:\data\GSE40595_RAW\
+
 COPY Required_files/ C:\data\Required_files\
 
 # Set the working directory
