@@ -20,7 +20,7 @@ RUN add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-c
 RUN apt-get update
 
 # Install the new version of R
-RUN apt-get install -y r-base r-base-dev
+RUN apt-get install -y r-base r-base-dev libicu-dev
 
 # Install required packages
 RUN apt-get install -y \ 
