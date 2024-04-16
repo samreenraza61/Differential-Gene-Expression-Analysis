@@ -5,14 +5,8 @@ on: [push]
 jobs:
   run:
     runs-on: ubuntu-latest
-    container: docker://dvcorg/cml:latest
 
     steps:
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install docker.io -y 
-          
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
 
@@ -52,12 +46,4 @@ jobs:
       - name: Running R scripts 
         run: |  
           Rscript scripts/GSE40595_Microarray_data_analysis.R
-          
-      - name: Build and Push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v6
-        with:
-          image: samreenraza40/microarray_data_analysis_scripts
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          dockerfile: dockerfile
+  
