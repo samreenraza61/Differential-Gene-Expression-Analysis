@@ -10,42 +10,11 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
         
-      - name: Install BiocManager
+      - name: Install BiocManager and other required pacakges
         run: |
           R -e 'install.packages("BiocManager")'
-
-      - name: Install oligo with disabled threading
-        run: |
           R -e 'BiocManager::install("oligo", configure.args="--disable-threading", force = TRUE)'
-
-      - name: Install Packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages:
-            any::BiocManager
-            any::GenomicRanges
-            any::Biostrings
-            any::SummarizedExperiment
-            any::MatrixGenerics
-            any::DelayedArray
-            any::oligoClasses
-            any::Biobase
-            any::multiClust
-            any::limma
-            any::EnhancedVolcano
-            any::diffcoexp
-            any::clusterProfiler
-            any::enrichplot
-            any::pathview
-            any::org.Hs.eg.db
-            any::pheatmap
-            any::ggplot2
-            any::amap
-            any::ggrepel
-            any::openxlsx
-            any::readxl
-            any::ggridges
-            any::R.utils
+          R -e 'BiocManager::install(c("GenomicRanges", "Biostrings", "SummarizedExperiment", "MatrixGenerics", "DelayedArray", "oligoClasses", "Biobase", "multiClust", "limma", "EnhancedVolcano", "diffcoexp", "clusterProfiler", "enrichplot", "pathview", "org.Hs.eg.db", "pheatmap", "ggplot2", "amap", "ggrepel", "openxlsx", "readxl", "ggridges", "R.utils"))'
 
       - name: Check out repository
         uses: actions/checkout@v3
