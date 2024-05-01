@@ -9,12 +9,6 @@ jobs:
     steps:          
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
-        
-      - name: Manually install preprocessCore
-        run: |
-          git clone https://github.com/bmbolstad/preprocessCore.git
-          cd preprocessCore
-          R CMD INSTALL --configure-args="--disable-threading" .
           
       - name: Install Packages
         uses: r-lib/actions/setup-r-dependencies@v2
@@ -45,6 +39,13 @@ jobs:
             any::readxl
             any::ggridges
             any::R.utils
+            
+      - name: Manually install preprocessCore
+        run: |
+          R -e 'if ("preprocessCore" %in% rownames(installed.packages())) remove.packages("preprocessCore")'
+          git clone https://github.com/bmbolstad/preprocessCore.git
+          cd preprocessCore
+          R CMD INSTALL --configure-args="--disable-threading" .
           
       - name: Check out repository
         uses: actions/checkout@v3
