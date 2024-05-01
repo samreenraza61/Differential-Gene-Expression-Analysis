@@ -1,46 +1,35 @@
 # Use an official Ubuntu as a parent image
 FROM ubuntu:latest
 
-# Set environment variables for R installation
-ENV DEBIAN_FRONTEND noninteractive
+# Add the CRAN repository to the software sources list
+RUN echo "deb http://cran.stat.ucla.edu/bin/linux/ubuntu focal-cran40/" | tee -a /etc/apt/sources.list.d/r-project.list
 
-# Update indices
-RUN apt update -qq
+# Install gnupg package
+RUN apt-get update && apt-get install -y gnupg
 
-# Install two helper packages we need
-RUN apt install --no-install-recommends -y software-properties-common dirmngr
+# Add the repository authentication key
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 
-# Install curl
-RUN apt-get update && apt-get install -y curl
+# Update package lists
+RUN apt-get update
 
-# Add the signing key (by Michael Rutter) for these repos
-# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
-# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
-RUN curl -fsSL https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+# Install R and software to compile R add-on packages
+RUN apt-get install -y r-base r-base-dev
 
-# Add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
-RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
-
-# Update package manager again
-RUN apt update
-
-# Install the new version of R
-RUN apt install -y r-base r-base-dev
-
-# Install required packages
-RUN apt-get install -y \ 
+# Install additional packages needed for R script
+RUN apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
-    pkg-config\
+    pkg-config \
     libharfbuzz-dev \
     libproj-dev \
     libcairo2-dev \
     libfribidi-dev \
     libjpeg-dev \
-    libx11-dev 
+    libx11-dev
 
 # Install Bioconductor
 RUN R -e "install.packages('BiocManager')"
