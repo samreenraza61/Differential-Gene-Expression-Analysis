@@ -73,17 +73,18 @@ ggplot(dataGG, aes(PC1, PC2)) +
   coord_fixed(ratio = sd_ratio) +
   scale_shape_manual(values = c(15, 4)) + 
   scale_color_manual(values = c("darkorange2", "dodgerblue4"))
-
+print("Raw boxplot")
 # boxplot - rawdata
 oligo::boxplot(rawData, target = "core", 
                main = "Boxplot of log2-intensitites for the raw data")
 
+print("Performing RMA")
 # Normalization:
 normData <- rma(rawData)
 ## Background correcting
 ## Normalizing
 ## Calculating Expression
-
+print("Norm boxplot")
 boxplot(normData)
 
 # Quality assessment of the calibrated data
