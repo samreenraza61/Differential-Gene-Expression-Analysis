@@ -13,8 +13,9 @@ jobs:
       - name: Install BiocManager and other required pacakges
         run: |
           R -e 'install.packages("BiocManager")'
+          R -e 'BiocManager::install(c("Biostrings", "SummarizedExperiment", "GenomicRanges", "oligoClasses", "GenomeInfoDb"))'
           R -e 'BiocManager::install("oligo", configure.args="--disable-threading", force = TRUE)'
-          R -e 'BiocManager::install(c("GenomicRanges", "Biostrings", "SummarizedExperiment", "MatrixGenerics", "DelayedArray", "oligoClasses", "Biobase", "multiClust", "limma", "EnhancedVolcano", "diffcoexp", "clusterProfiler", "enrichplot", "pathview", "org.Hs.eg.db", "pheatmap", "ggplot2", "amap", "ggrepel", "openxlsx", "readxl", "ggridges", "R.utils"))'
+          R -e 'BiocManager::install(c("MatrixGenerics", "DelayedArray", "Biobase", "multiClust", "limma", "EnhancedVolcano", "diffcoexp", "clusterProfiler", "enrichplot", "pathview", "org.Hs.eg.db", "pheatmap", "ggplot2", "amap", "ggrepel", "openxlsx", "readxl", "ggridges", "R.utils"))'
 
       - name: Check out repository
         uses: actions/checkout@v3
