@@ -16,6 +16,7 @@ jobs:
           packages:
             any::BiocManager
             any::oligo
+            any::affy
             any::GenomicRanges
             any::Biostrings
             any::SummarizedExperiment
