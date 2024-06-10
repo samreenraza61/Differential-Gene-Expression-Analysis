@@ -166,7 +166,7 @@ exp_file <- "expression_data_GSE40595.txt"
 write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = NA)
 
 # Using percent to specify the percentage of probes to select 
-probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 5, Poly = NULL,
+probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 25, Poly = NULL,
                            Adaptive = NULL, cutoff = NULL)
 #probe_num
 
@@ -199,11 +199,11 @@ fit <- lmFit(ranked_cv, design)
 fit <- eBayes(fit)
 
 # Get topTable results
-result <- topTable(fit, number = Inf, adjust.method = "none", coef = 1)
+result <- topTable(fit, number = Inf, adjust.method = "BH", coef = 1)
 
 # Add a column indicating gene status
-result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.0001, "Upregulated",
-                        ifelse(result$logFC < 2 & result$adj.P.Val < 0.0001, "Downregulated",
+result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.05, "Upregulated",
+                        ifelse(result$logFC < 2 & result$adj.P.Val < 0.05, "Downregulated",
                                "Not significant"))
 
 # Write results to a file
