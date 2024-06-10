@@ -194,13 +194,14 @@ design <- model.matrix(~factor(Groups))
 
 # Fit linear model
 fit <- lmFit(ranked_cv, design)
-
+print("DONE lmfit")
 # Empirical Bayes moderation
 fit <- eBayes(fit)
-
+print("DONE eBayes")
+                           
 # Get topTable results
 result <- topTable(fit, number = Inf, adjust.method = "BH", coef = 1)
-
+print("DONE toptable")
 # Add a column indicating gene status
 result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.05, "Upregulated",
                         ifelse(result$logFC < 2 & result$adj.P.Val < 0.05, "Downregulated",
@@ -224,6 +225,7 @@ EnhancedVolcano(toptable ,
                 lab = data$Gene_Symbol,
                 x = 'logFC',
                 y = 'P.Value')
+print("DONE enhancedvolcano")
 
 # Step: 04  Identify Differentially Co-expressed genes 
 
@@ -235,10 +237,11 @@ ovarian <- ranked_cv[,c( 9:39,46:77)]
 
 allowWGCNAThreads()
 res=diffcoexp(exprs.1 = normal, exprs.2 = ovarian, r.method = "spearman" )
-
+print("DONE diffcoexp")
 DCGs <- res$DCGs
 
 library(openxlsx)
 
 # Write the DCGs data frame to the Excel file
 write.xlsx(DCGs, "DCGs_GSE40595.xlsx", rowNames = FALSE)
+print("DONE All")
