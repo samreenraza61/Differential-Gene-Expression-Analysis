@@ -206,10 +206,12 @@ print("DONE toptable")
 result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.05, "Upregulated",
                         ifelse(result$logFC < 2 & result$adj.P.Val < 0.05, "Downregulated",
                                "Not significant"))
-
+print("Done DEGs")
+                           
 # Write results to a file
 write.table(result, "Diff_exp_GSE40595.txt", sep = "\t")
-
+print("DONE writing DEGs")
+                           
 #Volcano plot:
 library(ggrepel)
 library(EnhancedVolcano)
@@ -217,10 +219,11 @@ library(EnhancedVolcano)
 file1<-"Required_files/GSE40595_DEG.xlsx"
 library(readxl)
 data <- read_excel(file1)
-
+print("Start toptable")
 toptable <- topTable(fit, n = Inf)
 #toptable
 #names(toptable)
+print("START enhanced volcano")                        
 EnhancedVolcano(toptable ,
                 lab = data$Gene_Symbol,
                 x = 'logFC',
