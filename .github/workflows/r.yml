@@ -53,15 +53,6 @@ jobs:
       - name: Running R scripts 
         run: |  
           Rscript scripts/GSE40595_Microarray_data_analysis.R
-      
-      - name: Upload output files
-        uses: actions/upload-artifact@v2
-        with:
-          name: output-files
-          path: |
-            expression_data_GSE40595.txt
-            Diff_exp_GSE40595.txt
-            DCGs_GSE40595.xlsx
 
       - name: Build and Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v6
