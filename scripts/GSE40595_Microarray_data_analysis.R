@@ -166,7 +166,7 @@ exp_file <- "expression_data_GSE40595.txt"
 write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = NA)
 
 # Using percent to specify the percentage of probes to select 
-probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 20, Poly = NULL,
+probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 15, Poly = NULL,
                            Adaptive = NULL, cutoff = NULL)
 #probe_num
 
