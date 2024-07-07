@@ -216,7 +216,7 @@ print("DONE writing DEGs")
 library(ggrepel)
 library(EnhancedVolcano)
 
-file1<-"Required_files/GSE40595_DEG.xlsx"
+file1<-"Required_files/GSE40595_DEGs.xlsx"
 library(readxl)
 data <- read_excel(file1)
 print("Start toptable")
