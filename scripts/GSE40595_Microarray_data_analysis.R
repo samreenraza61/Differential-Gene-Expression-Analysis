@@ -249,3 +249,5 @@ library(openxlsx)
 
 # Write the DCGs data frame to the Excel file
 write.xlsx(DCGs, "DCGs_GSE40595.xlsx", rowNames = FALSE)
+
+                           
