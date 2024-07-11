@@ -1,7 +1,6 @@
 # Affymetrix Microarray Data Analysis:
 
-# Step:01 
-
+# Step:01  
 # Import microarray expression data as “ExpressionSet”
 #Perform Normalization
 
@@ -66,7 +65,7 @@ dataGG <- data.frame(PC1 = PCA_raw$x[,1], PC2 = PCA_raw$x[,2],
 # Create the PCA plot
 ggplot(dataGG, aes(PC1, PC2)) +
   geom_point(aes(shape = Disease, colour = Disease)) +
-  ggtitle("PCA plot of the log-transformed raw expression data") +
+  ggtitle("PCA of GSE40595 Before Normalization") +
   xlab(paste0("PC1, VarExp: ", percentVar[1], "%")) +
   ylab(paste0("PC2, VarExp: ", percentVar[2], "%")) +
   theme(plot.title = element_text(hjust = 0.5))+
@@ -74,10 +73,14 @@ ggplot(dataGG, aes(PC1, PC2)) +
   scale_shape_manual(values = c(15, 4)) + 
   scale_color_manual(values = c("darkorange2", "dodgerblue4"))
 
-# boxplot - rawdata
-oligo::boxplot(rawData, target = "core", 
-               main = "Boxplot of log2-intensitites for the raw data")
 
+library(oligo)
+
+# Boxplot Rawdata
+boxplot(rawData, target = "core", 
+        main = "GSE40595 Before Normalization",
+        las = 2,        # Rotate the labels on the x-axis
+        cex.axis = 0.5) # Adjust the size of the axis labels
 
 # Normalization:
 normData <- rma(rawData)
@@ -85,11 +88,9 @@ normData <- rma(rawData)
 ## Normalizing
 ## Calculating Expression
 
-boxplot(normData)
-
 # Quality assessment of the calibrated data
 
-exp_palmieri <- Biobase::exprs(normData)
+exp_palmieri <- exprs(normData)
 PCA <- prcomp(t(exp_palmieri), scale = FALSE)
 
 percentVar <- round(100*PCA$sdev^2/sum(PCA$sdev^2),1)
@@ -97,13 +98,13 @@ sd_ratio <- sqrt(percentVar[2] / percentVar[1])
 
 # Create data frame for PCA plot
 dataGG <- data.frame(PC1 = PCA$x[,1], PC2 = PCA$x[,2],
-                     Disease = pData(rawData)$group,
-                     Sample = sampleNames(rawData))
+                     Disease = pData(normData)$group,
+                     Sample = sampleNames(normData))
 
 # Create the PCA plot
 ggplot(dataGG, aes(PC1, PC2)) +
   geom_point(aes(shape = Disease, colour = Disease)) +
-  ggtitle("PCA plot of the normalized data") +
+  ggtitle("PCA of GSE40595 After Normalization") +
   xlab(paste0("PC1, VarExp: ", percentVar[1], "%")) +
   ylab(paste0("PC2, VarExp: ", percentVar[2], "%")) +
   theme(plot.title = element_text(hjust = 0.5))+
@@ -113,7 +114,10 @@ ggplot(dataGG, aes(PC1, PC2)) +
 
 
 # Boxplot of normalized data
-boxplot(normData, main = "Boxplot of intensities after normalization")
+boxplot(normData, target = "core", 
+        main = "GSE40595 After Normalization",
+        las = 2,        # Rotate the labels on the x-axis
+        cex.axis = 0.5) # Adjust the size of the axis labels
 
 
 # Step: Filtering based on intensity
@@ -123,7 +127,7 @@ palmieri_medians <- rowMedians(Biobase::exprs(normData))
 
 # Generate histogram of median intensities (optional)
 hist_res <- hist(palmieri_medians, 100, col = "cornsilk1", freq = FALSE,
-                 main = "Histogram of the median intensities",
+                 main = "Histogram of the median intensities of (GSE40595 Normalized Data)",
                  border = "antiquewhite4",
                  xlab = "Median intensities")
 
@@ -132,7 +136,7 @@ man_threshold <- 5
 
 # Generate histogram with threshold line (optional)
 hist_res <- hist(palmieri_medians, 100, col = "cornsilk", freq = FALSE,
-                 main = "Histogram of the median intensities",
+                 main = "Histogram of the median intensities showing threshold (GSE40595 Normalized Data)",
                  border = "antiquewhite4",
                  xlab = "Median intensities")
 abline(v = man_threshold, col = "coral4", lwd = 2)
@@ -166,7 +170,7 @@ exp_file <- "expression_data_GSE40595.txt"
 write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = NA)
 
 # Using percent to specify the percentage of probes to select 
-probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 15, Poly = NULL,
+probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 10, Poly = NULL,
                            Adaptive = NULL, cutoff = NULL)
 #probe_num
 
@@ -194,24 +198,21 @@ design <- model.matrix(~factor(Groups))
 
 # Fit linear model
 fit <- lmFit(ranked_cv, design)
-print("DONE lmfit")
+
 # Empirical Bayes moderation
 fit <- eBayes(fit)
-print("DONE eBayes")
-                           
+
 # Get topTable results
 result <- topTable(fit, number = Inf, adjust.method = "BH", coef = 1)
-print("DONE toptable")
+
 # Add a column indicating gene status
 result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.05, "Upregulated",
                         ifelse(result$logFC < 2 & result$adj.P.Val < 0.05, "Downregulated",
                                "Not significant"))
-print("Done DEGs")
-                           
+
 # Write results to a file
-write.table(result, "Diff_exp_GSE40595.txt", sep = "\t")
-print("DONE writing DEGs")
-                           
+write.table(result, "Diff_exp_GSE49595.txt", sep = "\t")
+
 #Volcano plot:
 library(ggrepel)
 library(EnhancedVolcano)
@@ -219,16 +220,17 @@ library(EnhancedVolcano)
 file1<-"Required_files/GSE40595_DEGs.xlsx"
 library(readxl)
 data <- read_excel(file1)
-print("Start toptable")
+
 toptable <- topTable(fit, n = Inf)
-#toptable
-#names(toptable)
-print("START enhanced volcano")                        
+
+names(toptable)
+
 EnhancedVolcano(toptable ,
                 lab = data$Gene_Symbol,
                 x = 'logFC',
-                y = 'P.Value')
-print("DONE enhancedvolcano")
+                y = 'adj.P.Val')+
+  ggtitle("DEGs of GSE40595 dataset") +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
 
 # Step: 04  Identify Differentially Co-expressed genes 
 
@@ -240,11 +242,10 @@ ovarian <- ranked_cv[,c( 9:39,46:77)]
 
 allowWGCNAThreads()
 res=diffcoexp(exprs.1 = normal, exprs.2 = ovarian, r.method = "spearman" )
-print("DONE diffcoexp")
+
 DCGs <- res$DCGs
 
 library(openxlsx)
 
 # Write the DCGs data frame to the Excel file
 write.xlsx(DCGs, "DCGs_GSE40595.xlsx", rowNames = FALSE)
-print("DONE All")
