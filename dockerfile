@@ -41,7 +41,11 @@ RUN R -e "install.packages('devtools')"
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
 
 # Install R packages using BiocManager with update argument
-RUN R -e "BiocManager::install(c('oligo', 'HDO.db', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'clusterProfiler', 'DOSE' , 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx', 'readxl', 'ggridges', 'pd.hg.u133.plus.2'), update = TRUE)"
+RUN R -e "BiocManager::install(c('oligo', 'HDO.db', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 
+                                 'clusterProfiler', 'DOSE' , 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 
+                                 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot',
+                                 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 
+                                 'openxlsx','readxl', 'ggridges', 'pd.hg.u133.plus.2'), update = TRUE)"
 
 # Create a directory for all the folders and scripts
 RUN mkdir /data
