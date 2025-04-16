@@ -10,7 +10,7 @@ set.seed(123)
 
 organism = "org.Hs.eg.db"
 
-file2 <- "C:/Users/PMLS/Documents/common-DEGs-all-KEGG-GO-input (2).xlsx"
+file2 <- "Required_files/GO_KEGG_INPUT.xlsx"
 df <- read_excel(file2)
 original_gene_list <- df$Average_logFC
 
