@@ -220,7 +220,7 @@ write.table(result, "Diff1_exp_GSE18520.txt", sep = "\t")
 library(ggrepel)
 library(EnhancedVolcano)
 
-file1<-"C:/Users/PMLS/Documents/GSE18520_DEGs.xlsx"
+file1<-"Required_files/GSE18520_DEGs.xlsx"
 library(readxl)
 data <- read_excel(file1)
 
