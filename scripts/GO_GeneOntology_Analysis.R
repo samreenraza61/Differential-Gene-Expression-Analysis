@@ -12,10 +12,14 @@ organism = "org.Hs.eg.db"
 
 file2 <- "Required_files/GO_KEGG_INPUT.xlsx"
 df <- read_excel(file2)
-original_gene_list <- df$Average_logFC
+# Combine into a named vector
+gene_list <- df %>% 
+  select(Gene_Symbol, Average_logFC) %>%
+  filter(!is.na(Average_logFC)) %>%
+  distinct(Gene_Symbol, .keep_all = TRUE) %>%  # removes duplicate gene symbols
+  arrange(desc(Average_logFC))                 # sort decreasing
 
-# Name the vector
-names(original_gene_list) <- df$Gene_Symbol
+gene_list <- setNames(gene_list$Average_logFC, gene_list$Gene_Symbol)
 
 # Remove NA values and sort the list in decreasing order
 gene_list <- na.omit(original_gene_list)
