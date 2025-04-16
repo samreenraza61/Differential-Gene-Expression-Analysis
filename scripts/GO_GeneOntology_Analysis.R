@@ -91,3 +91,4 @@ write.table(combined_df, "GO_Enrichment_Results.txt", sep = "\t", row.names = FA
 bp_genes
 cc_genes
 mf_genes
+print("Done GO Analysis")
