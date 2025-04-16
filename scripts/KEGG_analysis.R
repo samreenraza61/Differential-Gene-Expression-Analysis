@@ -8,6 +8,19 @@ set.seed(123)
 
 file3 <- "Required_files/GO_KEGG_INPUT.xlsx"
 df1 = read_excel(file3)
+
+# Combine into a named vector
+original_gene_list <- df1 %>% 
+  select(Gene_Symbol, Average_logFC) %>%
+  filter(!is.na(Average_logFC)) %>%
+  distinct(Gene_Symbol, .keep_all = TRUE) %>%  # removes duplicate gene symbols
+  arrange(desc(Average_logFC))                 # sort decreasing
+
+original_gene_list <- setNames(original_gene_list$Average_logFC, original_gene_list$Gene_Symbol)
+
+# Remove NA values and sort the list in decreasing order
+gene_list <- na.omit(original_gene_list)
+gene_list <- sort(gene_list, decreasing = TRUE)
 original_gene_list1 <- df1$Average_logFC
 # name the vector
 names(original_gene_list1) <- df1$Entrez_ID
