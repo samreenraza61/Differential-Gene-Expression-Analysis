@@ -62,3 +62,5 @@ WORKDIR /data/
 
 # Run R scripts
 CMD ["Rscript", "GSE40595_Microarray_data_analysis.R"]
+CMD ["Rscript", "GO_GeneOntology_Analysis.R"]
+CMD ["Rscript", "KEGG_analysis.R"]
