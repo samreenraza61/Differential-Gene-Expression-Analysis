@@ -1,29 +1,12 @@
 # Affymetrix Microarray Data Analysis:
 
-# Load required packages :
-
-library(oligo)
-library(Biobase)
-library(ggplot2)
-library(amap)
-library(multiClust)
-library(limma)
-library(pheatmap)
-library(ggplot2)
-library(ggrepel)
-library(EnhancedVolcano)
-library(readxl)
-library(GenomicRanges)
-library(diffcoexp)
-library(openxlsx)
-library(clusterProfiler)
-library(enrichplot)
-library(pathview)
-
 # Step:01  
 # Import microarray expression data as “ExpressionSet”
 #Perform Normalization
 
+library(oligo)
+library(Biobase)
+library(ggplot2)
 
 #Read .CEL files = rawdata
 
@@ -43,7 +26,7 @@ expression_feature_set <- rawData
 getClass("ExpressionFeatureSet")
 
 # Access the expression values
-#exprs(expression_feature_set)
+exprs(expression_feature_set)
 
 # Find the maximum expression value
 max(exprs(expression_feature_set))
@@ -64,9 +47,10 @@ sampleNames(rawData) <- sampleNames
 
 # Define groups based on sample names
 pData(rawData)$group <- ifelse(grepl("HOSE", filename), "Normal Samples", "Ovarian Cancer")
-#pData(rawData)
 
-# Check Quality Control = rawdata
+pData(rawData)
+
+#Quality Control of raw data
 
 exp_raw <- log2(exprs(expression_feature_set))
 PCA_raw <- prcomp(t(exp_raw), scale. = FALSE)
@@ -82,17 +66,24 @@ dataGG <- data.frame(PC1 = PCA_raw$x[,1], PC2 = PCA_raw$x[,2],
 # Create the PCA plot
 ggplot(dataGG, aes(PC1, PC2)) +
   geom_point(aes(shape = Disease, colour = Disease)) +
-  ggtitle("PCA plot of the log-transformed raw expression data") +
+  ggtitle("PCA of GSE54388 Before Normalization") +
   xlab(paste0("PC1, VarExp: ", percentVar[1], "%")) +
   ylab(paste0("PC2, VarExp: ", percentVar[2], "%")) +
   theme(plot.title = element_text(hjust = 0.5))+
   coord_fixed(ratio = sd_ratio) +
   scale_shape_manual(values = c(15, 4)) + 
   scale_color_manual(values = c("darkorange2", "dodgerblue4"))
-
 # boxplot - rawdata
-oligo::boxplot(rawData, target = "core", 
-               main = "Boxplot of log2-intensitites for the raw data")
+# Define the colors for the samples
+sample_colors <- ifelse(pData(rawData)$group == "Normal Samples", "orange", "gray")
+
+oligo::boxplot(rawData, target = "core",
+               main = "GSE54388 Before Normalization",
+               las = 2, # Rotate the labels on the x-axis
+               cex.axis = 0.5, # Adjust the size of the axis label
+               col = sample_colors # Set the colors for the samples
+)
+               
 
 # Normalization:
 normData <- rma(rawData)
@@ -103,7 +94,7 @@ boxplot(normData)
 
 # Quality assessment of the calibrated data
 
-exp_palmieri <- Biobase::exprs(normData)
+exp_palmieri <- exprs(normData)
 PCA <- prcomp(t(exp_palmieri), scale = FALSE)
 
 percentVar <- round(100*PCA$sdev^2/sum(PCA$sdev^2),1)
@@ -111,13 +102,13 @@ sd_ratio <- sqrt(percentVar[2] / percentVar[1])
 
 # Create data frame for PCA plot
 dataGG <- data.frame(PC1 = PCA$x[,1], PC2 = PCA$x[,2],
-                     Disease = pData(rawData)$group,
-                     Sample = sampleNames(rawData))
+                     Disease = pData(normData)$group,
+                     Sample = sampleNames(normData))
 
 # Create the PCA plot
 ggplot(dataGG, aes(PC1, PC2)) +
   geom_point(aes(shape = Disease, colour = Disease)) +
-  ggtitle("PCA plot of the normalized data") +
+  ggtitle("PCA of GSE54388 After Normalization") +
   xlab(paste0("PC1, VarExp: ", percentVar[1], "%")) +
   ylab(paste0("PC2, VarExp: ", percentVar[2], "%")) +
   theme(plot.title = element_text(hjust = 0.5))+
@@ -126,9 +117,15 @@ ggplot(dataGG, aes(PC1, PC2)) +
   scale_color_manual(values = c("darkorange2", "dodgerblue4"))
 
 
-# Boxplot of normalized data
-boxplot(normData, main = "Boxplot of intensities after normalization")
+# Define the colors for the samples
+sample_colors <- ifelse(pData(normData)$group == "Normal Samples", "orange", "gray")
 
+oligo::boxplot(normData, target = "core",
+               main = "GSE54388 After Normalization",
+               las = 2, # Rotate the labels on the x-axis
+               cex.axis = 0.5, # Adjust the size of the axis label
+               col = sample_colors # Set the colors for the samples
+)
 
 # Step: Filtering based on intensity
 
@@ -137,7 +134,7 @@ palmieri_medians <- rowMedians(Biobase::exprs(normData))
 
 # Generate histogram of median intensities (optional)
 hist_res <- hist(palmieri_medians, 100, col = "cornsilk1", freq = FALSE,
-                 main = "Histogram of the median intensities",
+                 main = "Histogram of the median intensities of (GSE54388 Normalized Data)",
                  border = "antiquewhite4",
                  xlab = "Median intensities")
 
@@ -146,7 +143,7 @@ man_threshold <- 5
 
 # Generate histogram with threshold line (optional)
 hist_res <- hist(palmieri_medians, 100, col = "cornsilk", freq = FALSE,
-                 main = "Histogram of the median intensities",
+                 main = "Histogram of the median intensities showing threshold of(GSE54388 Normalized Data)",
                  border = "antiquewhite4",
                  xlab = "Median intensities")
 abline(v = man_threshold, col = "coral4", lwd = 2)
@@ -168,15 +165,19 @@ palmieri_manfiltered <- normData[idx_man_threshold, ]
 
 # Step: 02  Feature Selection:
 
+# Load necessary libraries for feature selection
+library(amap)
+library(multiClust)
+
 # Extract expression data from the ExpressionFeatureSet
 expr_data <- exprs(normData)
 
 # Write the expression data to a text file
-exp_file <- "expression_data_GSE54388.txt"
+exp_file <- "expression_data.txt"
 write.table(expr_data, file = exp_file, sep = "\t", quote = FALSE, col.names = NA)
 
 # Using percent to specify the percentage of probes to select 
-probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 5, Poly = NULL,
+probe_num <- number_probes(input = exp_file, expr_data, Fixed = NULL, Percent = 10, Poly = NULL,
                            Adaptive = NULL, cutoff = NULL)
 #probe_num
 
@@ -187,9 +188,14 @@ ranked_cv <- probe_ranking(input = exp_file,
                            data.exp = expr_data, 
                            method = "CV_Guided")
 
-#ranked_cv 
+ranked_cv 
 
 #Step:03 Differential Gene Expression Analysis
+
+# Load required packages
+library(limma)
+library(pheatmap)
+library(ggplot2)
 
 # Define Groups
 Groups <- ifelse(grepl("HOSE", colnames(ranked_cv)), "Normal", "Ovarian")
@@ -204,17 +210,24 @@ fit <- lmFit(ranked_cv, design)
 fit <- eBayes(fit)
 
 # Get topTable results
-result <- topTable(fit, number = Inf, adjust.method = "none", coef = 1)
+result <- topTable(fit, number = Inf, adjust.method = "BH", coef = 1)
+
 
 # Add a column indicating gene status
-result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.0001, "Upregulated",
-                        ifelse(result$logFC < 2 & result$adj.P.Val < 0.0001, "Downregulated",
+result$status <- ifelse(result$logFC >= 2 & result$adj.P.Val < 0.05, "Upregulated",
+                        ifelse(result$logFC <= 2 & result$adj.P.Val  < 0.05, "Downregulated",
                                "Not significant"))
 
 # Write results to a file
-write.table(result, "Diff_exp_GSE54388.txt", sep = "\t")
+write.table(result, "Diff1_exps_GSE54388.txt", sep = "\t")
+
+#Volcano plot:
+library(ggplot2)
+library(ggrepel)
+library(EnhancedVolcano)
 
 file1<-"Required_files/GSE54388_DEG.xlsx"
+library(readxl)
 data <- read_excel(file1)
 
 toptable <- topTable(fit, n = Inf)
@@ -223,113 +236,24 @@ toptable <- topTable(fit, n = Inf)
 EnhancedVolcano(toptable ,
                 lab = data$Gene_Symbol,
                 x = 'logFC',
-                y = 'P.Value')
+                y = 'P.Value')+
+  ggtitle("DEGs of GSE54388 dataset") +
+  theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5))
 
 # Step: 04  Identify Differentially Co-expressed genes 
 
-normal <- ranked_cv[, 1:6]
-ovarian <- ranked_cv[, 7:22] 
+library(GenomicRanges)
+library(diffcoexp)
+
+Normal <- ranked_cv[, 1:6]
+Ovarian <- ranked_cv[, 7:22] 
 
 allowWGCNAThreads()
-res=diffcoexp(exprs.1 = normal, exprs.2 = ovarian, r.method = "spearman" )
+res=diffcoexp(exprs.1 = Normal, exprs.2 = Ovarian, r.method = "spearman" )
 
 DCGs <- res$DCGs
 
+library(openxlsx)
+
 # Write the DCGs data frame to the Excel file
 write.xlsx(DCGs, "DCGs_GSE54388.xlsx", rowNames = FALSE)
-
-#Step: Gene Set Enrichment Analysis
-
-# we use ggplot2 to add x axis labels (ex: ridgeplot)
-suppressPackageStartupMessages(library(ggplot2))
-
-library(org.Hs.eg.db)
-organism = "org.Hs.eg.db" 
-kegg_organism <- "hsa"
-
-file2<-"Required_files/GOinput_GSE54388.xlsx"
-df = read_excel(file2)
-original_gene_list <- df$logFC
-#original_gene_list
-
-# name the vector
-names(original_gene_list) <- df$Gene_Symbol
-#original_gene_list
-
-# omit any NA values 
-gene_list<-na.omit(original_gene_list)
-
-# sort the list in decreasing order (required for clusterProfiler)
-gene_list = sort(gene_list, decreasing = TRUE)
-
-#Gene Ontology
-
-gse <- gseGO(geneList=gene_list, 
-             ont ="ALL", 
-             keyType = "SYMBOL", 
-             nPerm = 10000, 
-             minGSSize = 3, 
-             maxGSSize = 800, 
-             pvalueCutoff = 0.05, 
-             verbose = TRUE, 
-             OrgDb = organism, 
-             pAdjustMethod = "none")
-
-require(DOSE)
-dotplot(gse, showCategory=10, split=".sign") + facet_grid(.~.sign)
-
-#KEGG gene set enrichment analysis :
-
-library(readxl)
-
-file3<-"Required_files/kegg_input_GSE54388.xlsx"
-df1 = read_excel(file3)
-original_gene_list1 <- df1$logFC
-# name the vector
-names(original_gene_list1) <- df1$ENTREZ_ID
-# omit any NA values 
-gene_list1<-na.omit(original_gene_list1)
-
-# sort the list in decreasing order (required for clusterProfiler)
-gene_list1 = sort(gene_list1, decreasing = TRUE)
-
-kegg_organism = "hsa"
-kk2 <- gseKEGG(geneList     = gene_list1,
-               organism     = kegg_organism,
-               nPerm        = 10000,
-               minGSSize    = 3,
-               maxGSSize    = 800,
-               pvalueCutoff = 0.05,
-               pAdjustMethod = "none",
-               keyType       = "ncbi-geneid")
-
-
-dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") + facet_grid(.~.sign)
-
-ridgeplot(kk2) + labs(x = "enrichment distribution")
-
-library(pathview)
-
-# Produce the native KEGG plot (PNG)
-hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = kegg_organism)
-
-# Produce a different plot (PDF) (not displayed here)
-hsa <- pathview(gene.data=gene_list1, pathway.id="hsa05235", species = kegg_organism, kegg.native = F)
-knitr::include_graphics("hsa05235.pathview.png")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
