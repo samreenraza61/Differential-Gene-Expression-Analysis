@@ -25,9 +25,6 @@ expression_feature_set <- rawData
 # Check the class definition of ExpressionFeatureSet
 getClass("ExpressionFeatureSet")
 
-# Access the expression values
-#exprs(expression_feature_set)
-
 # Find the maximum expression value
 max(exprs(expression_feature_set))
 
@@ -73,14 +70,16 @@ ggplot(dataGG, aes(PC1, PC2)) +
   scale_shape_manual(values = c(15, 4)) + 
   scale_color_manual(values = c("darkorange2", "dodgerblue4"))
 
-
-library(oligo)
+# Define the colors for the samples
+sample_colors <- ifelse(pData(rawData)$group == "Normal", "orange", "gray")
 
 # Boxplot Rawdata
 boxplot(rawData, target = "core", 
         main = "GSE40595 Before Normalization",
         las = 2,        # Rotate the labels on the x-axis
-        cex.axis = 0.5) # Adjust the size of the axis labels
+        cex.axis = 0.5, # Adjust the size of the axis labels
+        col = sample_colors # Set the colors for the samples
+        ) 
 
 # Normalization:
 normData <- rma(rawData)
@@ -89,7 +88,6 @@ normData <- rma(rawData)
 ## Calculating Expression
 
 # Quality assessment of the calibrated data
-
 exp_palmieri <- exprs(normData)
 PCA <- prcomp(t(exp_palmieri), scale = FALSE)
 
@@ -112,13 +110,12 @@ ggplot(dataGG, aes(PC1, PC2)) +
   scale_shape_manual(values = c(15, 4)) + 
   scale_color_manual(values = c("darkorange2", "dodgerblue4"))
 
-
 # Boxplot of normalized data
 boxplot(normData, target = "core", 
         main = "GSE40595 After Normalization",
         las = 2,        # Rotate the labels on the x-axis
-        cex.axis = 0.5) # Adjust the size of the axis labels
-
+        cex.axis = 0.5, # Adjust the size of the axis labels
+        col = sample_colors) # Set the colors for the samples
 
 # Step: Filtering based on intensity
 
@@ -139,7 +136,9 @@ hist_res <- hist(palmieri_medians, 100, col = "cornsilk", freq = FALSE,
                  main = "Histogram of the median intensities showing threshold (GSE40595 Normalized Data)",
                  border = "antiquewhite4",
                  xlab = "Median intensities")
+
 abline(v = man_threshold, col = "coral4", lwd = 2)
+text(x = man_threshold, y = max(hist_res$density) * 0.8, labels = paste("Threshold =", man_threshold), col = "coral4", pos = 4)
 
 # Get number of samples per group
 no_of_samples <- table(paste0(pData(normData)$Factor.Value.disease., "_",
@@ -249,5 +248,3 @@ library(openxlsx)
 
 # Write the DCGs data frame to the Excel file
 write.xlsx(DCGs, "DCGs_GSE40595.xlsx", rowNames = FALSE)
-
-                           
