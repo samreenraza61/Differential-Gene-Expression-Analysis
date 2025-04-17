@@ -7,30 +7,20 @@ library(dplyr)
 
 set.seed(123)
 
-file3 <- "Required_files/GO_KEGG_INPUT.xlsx"
+file3 <- "C:/Users/Muzi/Documents/GO_KEGG_INPUT.xlsx"
 df1 = read_excel(file3)
-
 # Combine into a named vector
-original_gene_list <- df1 %>% 
+original_gene_list1 <- df1 %>% 
   select(Gene_Symbol, Average_logFC) %>%
   filter(!is.na(Average_logFC)) %>%
   distinct(Gene_Symbol, .keep_all = TRUE) %>%  # removes duplicate gene symbols
   arrange(desc(Average_logFC))                 # sort decreasing
 
-original_gene_list <- setNames(original_gene_list$Average_logFC, original_gene_list$Gene_Symbol)
+original_gene_list1 <- setNames(original_gene_list1$Average_logFC, original_gene_list1$Gene_Symbol)
 
 # Remove NA values and sort the list in decreasing order
-gene_list <- na.omit(original_gene_list)
-gene_list <- sort(gene_list, decreasing = TRUE)
-original_gene_list1 <- df1$Average_logFC
-# name the vector
-names(original_gene_list1) <- df1$Entrez_ID
-
-# omit any NA values 
-gene_list1<-na.omit(original_gene_list1)
-
-# sort the list in decreasing order (required for clusterProfiler)
-gene_list1 = sort(gene_list1, decreasing = TRUE)
+gene_list1 <- na.omit(original_gene_list1)
+gene_list1 <- sort(gene_list1, decreasing = TRUE)
 
 kegg_organism = "hsa"
 kk2 <- gseKEGG(geneList     = gene_list1,
@@ -58,7 +48,7 @@ replace_gene_ids_with_names <- function(gene_ids, id_to_name) {
 
 kegg_results$Genes <- sapply(kegg_results$core_enrichment, replace_gene_ids_with_names, id_to_name = gene_id_to_name)
 
-write.csv(kegg_results, "KEGG_results_new.csv", row.names = FALSE)
+write.csv(kegg_results, "C:/Users/Muzi/Documents/KEGG_results_new.csv", row.names = FALSE)
 
 dotplot(kk2, showCategory = 10) + ggtitle("KEGG Pathway") + theme(plot.title = element_text(hjust = 0.5))
 
