@@ -33,6 +33,19 @@ RUN apt-get install -y \
     libglpk-dev \
     libgmp-dev
 
+# Install build tools and dependencies for C++ packages
+RUN apt-get install -y \
+    build-essential \
+    g++ \
+    libboost-all-dev \
+    zlib1g-dev \
+    libgsl-dev \
+    libtbb-dev \
+    libgmp-dev \
+    libmpfr-dev \
+    libgfortran5 \
+    libgfortran-13-dev
+
 # Install Bioconductor
 RUN R -e "install.packages('BiocManager')"
 
@@ -42,7 +55,7 @@ RUN R -e "install.packages('devtools')"
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
 
-RUN R -e "BiocManager::install('clusterProfiler', update = TRUE, ask = FALSE)"
+RUN R -e "BiocManager::install('fgsea', update = TRUE, ask = FALSE)"
 
 # Install R packages using BiocManager with update argument
 RUN R -e "BiocManager::install(c('oligo', 'HDO.db', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'clusterProfiler', 'DOSE' , 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx','readxl', 'ggridges', 'pd.hg.u133.plus.2'), update = TRUE)"
