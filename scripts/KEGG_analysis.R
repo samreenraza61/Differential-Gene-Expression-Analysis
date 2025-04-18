@@ -11,12 +11,12 @@ file3 <- "Required_files/GO_KEGG_INPUT.xlsx"
 df1 = read_excel(file3)
 # Combine into a named vector
 original_gene_list1 <- df1 %>% 
-  select(Gene_Symbol, Average_logFC) %>%
+  select(Entrez_ID, Average_logFC) %>%
   filter(!is.na(Average_logFC)) %>%
-  distinct(Gene_Symbol, .keep_all = TRUE) %>%  # removes duplicate gene symbols
+  distinct(Entrez_ID, .keep_all = TRUE) %>%  # removes duplicate gene symbols
   arrange(desc(Average_logFC))                 # sort decreasing
 
-original_gene_list1 <- setNames(original_gene_list1$Average_logFC, original_gene_list1$Gene_Symbol)
+original_gene_list1 <- setNames(original_gene_list1$Average_logFC, original_gene_list1$Entrez_ID)
 
 # Remove NA values and sort the list in decreasing order
 gene_list1 <- na.omit(original_gene_list1)
