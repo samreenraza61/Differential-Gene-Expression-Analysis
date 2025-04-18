@@ -29,7 +29,9 @@ RUN apt-get install -y \
     libcairo2-dev \
     libfribidi-dev \
     libjpeg-dev \
-    libx11-dev
+    libx11-dev \
+    libglpk-dev \
+    libgmp-dev
 
 # Install Bioconductor
 RUN R -e "install.packages('BiocManager')"
