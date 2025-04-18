@@ -55,8 +55,11 @@ RUN R -e "install.packages('devtools')"
 # Run R command to install ggtree from GitHub
 RUN R -e "devtools::install_github('YuLab-SMU/ggtree')"
 
-# Install fgsea from GitHub (Bioconductor source)
-RUN R -e "devtools::install_git('https://github.com/ctlab/fgsea.git')"
+# Reinstall BiocParallel explicitly
+RUN R -e "BiocManager::install('BiocParallel', ask=FALSE, update=TRUE)"
+
+# Then install fgsea from GitHub source
+RUN R -e "BiocManager::install('fgsea', ask=FALSE, update=TRUE)"
 
 # Install R packages using BiocManager with update argument
 RUN R -e "BiocManager::install(c('oligo', 'HDO.db', 'GenomicRanges', 'Biostrings', 'SummarizedExperiment', 'clusterProfiler', 'DOSE' , 'MatrixGenerics', 'DelayedArray', 'oligoClasses', 'Biobase', 'multiClust', 'limma', 'EnhancedVolcano', 'diffcoexp', 'enrichplot', 'pathview', 'org.Hs.eg.db', 'pheatmap', 'ggplot2', 'amap', 'ggrepel', 'openxlsx','readxl', 'ggridges', 'pd.hg.u133.plus.2'), update = TRUE)"
